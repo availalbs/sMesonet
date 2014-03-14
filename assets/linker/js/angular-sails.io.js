@@ -164,6 +164,7 @@ angular.module('sails.io', [])
           if (this.ioSocket) this.disconnect();
           angular.extend(this.options, options);
 
+          console.log(this.options.url);
           this.ioSocket = io.connect(this.options.url, { reconnect: false });
           this.forward(this.options.eventForwards);
           this.canReconnect = true;
