@@ -1,0 +1,161 @@
+html(ng-app="app")
+  head
+    
+    //  Meta Data 
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(name='description', content='description')
+    meta(name='keywords', content='keywords')
+    
+    //  Cascading Style Sheets
+    link(rel="stylesheet", href="/linker/styles/font-awesome.css")
+    link(rel="stylesheet", href="/linker/styles/bootstrap.css")
+    link(rel='stylesheet', type='text/css', href='/linker/styles/font.css')
+    link(rel='stylesheet', type='text/css', href='/linker/styles/style.css')
+    link(rel='stylesheet', type='text/css', href='/linker/styles/leaflet.css')
+    
+    //  Javascript Includes 
+    script(type='text/javascript', src='/linker/js/jquery-1.9.1.min.js')
+    script(type='text/javascript', src='/linker/js/d3.v3.min.js')
+    script(type='text/javascript', src='/linker/js/nyCounties.js')
+    script(type='text/javascript', src='/linker/js/leaflet.js')
+    script(type='text/javascript', src='/linker/js/queue.v1.min.js')
+    script(type='text/javascript', src='/linker/js/colorbrewer.js')
+    script(type='text/javascript', src='/linker/js/src/mesonet.js')
+    script(type='text/javascript', src='/linker/js/src/mesoStations.js')
+    script(type='text/javascript', src='/linker/js/src/behavior.js')
+    script(type="text/javascript", src="/linker/js/angular.js")
+    script(type="text/javascript", src="/linker/js/ui-bootstrap.js")
+    script(type="text/javascript", src="/linker/js/ui-bootstrap-tpls.js")
+    script(type="text/javascript", src="/linker/js/socket.io.js")
+    script(type="text/javascript", src="/linker/js/angular-socket.io.js")
+    script(type="text/javascript", src="/linker/js/angular-sails.io.js")
+    script(type="text/javascript", src="/linker/js/app.js")
+    script(type="text/javascript", src="/linker/js/services/sailsSocket.js")
+    script(type="text/javascript", src="/linker/js/directives/popupDirective.js")
+    script(type="text/javascript", src="/linker/js/controllers/mesonetCtrl.js")
+    script(type="text/javascript", src="/linker/js/controllers/sailsSocketCtrl.js")
+    
+    title Mesonet Site Selection Tool
+  
+  body(ng-controller="MesonetCtrl")
+    #map
+    #info
+    #coords
+    #hover
+    #legend
+      h2
+        a.closed(href='#') Legend
+      #legend-detail
+        #leaflet-marker-pane_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.station(cx='10', cy='10', r='7', fill='#fff')
+              span Proposed Mesonet Site
+        #asos_stations_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.asos(cx='10', cy='10', r='7', fill='#e74c3c')
+              span ASOS Station
+        #floodplain_layer_legend
+          ul
+            li
+              svg(width='20', height='20')
+                rect(width='15', height='15', fill='#000')
+              span Flood Hazard Zone
+        #county_legend
+        #rainfall_layer_legend
+    #container(ng-controller="SailsSocketCtrl")
+      h1 MESONET Site Selection Tool
+      #content
+        //strong Station Site Selection
+        .whitebox(style="display:none;")
+          center
+            div(style='width: 90%;')
+              span(style='float: left; font-size: 10px; font-weight: light;') Station interval in millionths of degrees Lat/Long
+            input#interval_text(type='text', style='border: none; background-color: #f0f0f0; padding-left: 5px; margin-bottom: 5px; font-size: 18pt; width: 90%;', value='3330')
+            div(style='width: 90%;')
+              span(style='float: left; font-size: 10px; font-weight: light;')  More Stations 
+              span(style='float: right; font-size: 10px; font-weight: light;')  Fewer Stations 
+            input#interval_slider(type='range', value='3330', min='2645', max='9000', step='10', style='width: 80%;')
+            br
+            p(style='font-size: 10px; font-weight: light;')
+              | Shift Grid Vertically :
+              strong
+                span#lat-shift 0.0
+                | %
+            div(style='width: 90%; margin-top: -27px;')
+              span(style='float: left; font-size: 10px; font-weight: light;')  down 
+              span(style='float: right; font-size: 10px; font-weight: light;')  up 
+            input#lat_adjust(type='range', value='0', min='-0.99', max='0.99', step='.01', style='width: 80%;')
+            p(style='font-size: 10px; font-weight: light;')
+              | Shift Grid Laterally :
+              strong
+                span#long-shift 0.0
+                | %
+            div(style='width: 90%; margin-top: -27px;')
+              span(style='float: left; font-size: 10px; font-weight: light;')  left 
+              span(style='float: right; font-size: 10px; font-weight: light;')  right 
+            input#long_adjust(type='range', value='0', min='-0.99', max='0.99', step='.01', style='width: 80%;')
+            br
+            | Number of Stations :
+            span#num_stations
+            br
+
+        strong Map Layers
+        Hello
+        .whitebox
+          ul#economic(style='list-style: none;')
+            li
+              a(style='height:35px')#leaflet-marker-pane.active Proposed Mesonet Stations
+            li
+              a(style='height:35px')#asos_stations.active ASOS Stations
+            li
+              a(style='height:35px')#county. County Population
+            li
+              a(style='height:35px')#rainfall_layer. Average Annual Rainfall
+            li
+              a(style='height:35px')#floodplain_layer. Flood Hazard Zone
+        //strong Export Mesonet Sites
+        
+        .whitebox(style='position:absolute;bottom:20px;right:10px;overflow:none;width:90%') 
+          a.btn(ng-click="openModal()" ng-hide="loggedIn" style="float:right;") Login
+          .user-info(ng-show="loggedIn") Logged in as 
+            strong {{user.username}}
+            .greybox(style='height: 60px;')
+              a.btn.btn-primary#add_station.btn(style="margin:5px") Add Station
+              a#export_csv.btn.btn-primary Export CSV
+              span#download
+            
+            a.btn.btn-primary(ng-click="logout()" style="float:right;") Logout
+            a.btn.btn-primary(href='/admin/users' ng-show="user.accessLevel == 1" style="float:right;margin-right:5px;color:#fff") Admin Panel
+            //a.btn(ng-click="loadStops()" style="float:right;") loadStops
+    #info
+
+    script(type="text/ng-template", id="LoginModalContent.html")
+      .modal-header
+        h3.panel-title.modal-title
+          = 'Login'
+      .modal-body
+        .alert.alert-danger(ng-show="message!=''") {{message}}
+        form.form-horizontal(role="form", action="/login", method="post")
+          .form-group
+            label.col-sm-2.control-label(for="loginUsername") Username
+            .col-sm-10
+              input.form-control(type="text", id="loginUsername", name="username", placeholder="Username", ng-model="username")
+          .form-group
+            label.col-sm-2.control-label(for="loginPassword") Password
+            .col-sm-10
+              input.form-control(type="password", id="loginPassword", name="password", placeholder="Password",ng-model="password")
+      .modal-footer
+        .form-group
+            button.btn.btn-primary(ng-click="ok('login',username,password)") Login
+            button.btn.btn-default(ng-click="cancel()") Cancel
+            
+
+    script(type="text/ng-template", id="errorModalContent.html")
+      .modal-body
+        .alert.alert-danger.no-margin-bot
+          div: strong Error:
+          div {{error.message}}

@@ -1,0 +1,35 @@
+<div>
+	<div class='modal-header' style="background-color:#2C7BC9;padding:0 0 0 0;">
+  	<input class ='form-control' ng-model="station.name" ng-disabled="!editable" style="border:none;background-color:#2C7BC9;color:#fff;font-weight:bold;font-size:16px;box-shadow:none">
+ 	</div>
+ 	<div class='modal-body' style='padding:0 0 0 0;'>
+ 		<table class="table table-hover" style="width:301px">
+ 		<tr>
+			<td><strong>Station Id:</stong></td><td>{{station.id}}</td>
+		</tr>
+		<tr>
+	  	<td><strong>Station Type:</strong></td>
+			<td>
+		  	<select ng-model="station.type" ng-change='changeIcon(station)' style='padding:5px;background-color:#fff' ng-disabled="!editable">
+			  	<option value='mesonet'> Improving forecasting</option>
+			  	<option value='profiler'> Profiler site </option>
+			  	<option value='suny'> SUNY System Site</option>
+			  	<option value='high-impact'> Frequent high-impact events </option>
+			  	<option value='deficiency'> Model deficiency areas </option>
+			  	<option value='other-sectors'> Beneficial to other sectors </option>
+			  	<option value='snow'> Snow measurement site </option>
+		  	</select>
+		  </td>
+	  <tr>
+	  	<td><strong>Location:</strong></td><td>{{station.lat | number}},{{station.lng | number}}</td>
+		</tr>
+		<tr>
+	  	<td><strong>Elevation:</strong></td><td></td>
+		</tr>
+		<tr>
+			<td><button ng-show='editable' class='btn btn-danger' style="background-color: #d2322d;border-color: #ac2925;" ng-click="deleteStation(station.id)">Delete</button></td>
+			<td><button class='btn btn-default' ng-click="addComment(station.id)">Comment</button></td>
+		<tr>
+		</table>
+	</div>
+</div>
