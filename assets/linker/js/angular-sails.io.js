@@ -17,6 +17,7 @@
 angular.module('sails.io', [])
   .factory('sailsSocketFactory', function($rootScope, $http, $timeout, $location, $log) {
 
+    console.log($location.path());
     var optionDefaults = {
       url: $location.path(),
       defaultScope: $rootScope,
