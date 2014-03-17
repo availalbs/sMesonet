@@ -19,6 +19,7 @@ angular.module('sails.io', [])
 
     var optionDefaults = {
       url: $location.path(),
+      //url: 'http://vis.availabs.org:1340',
       defaultScope: $rootScope,
       eventPrefix: 'sailsSocket:',
       eventForwards: ['connect', 'message', 'disconnect', 'error'],

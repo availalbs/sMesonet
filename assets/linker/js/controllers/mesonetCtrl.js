@@ -31,11 +31,9 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   });
 	
 	$scope.$on('sailsSocket:message', function(ev, data) {
-    // Example messages:
-    //   {model: "todo", verb: "create", data: Object, id: 25}
-    //   {model: "todo", verb: "update", data: Object, id: 3}
-    //   {model: "todo", verb: "destroy", id: 20}
+
     $log.debug('New comet message received :: ', data);
+  
   });
   
 	// $scope.loadStops = function(){
@@ -68,16 +66,16 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		sailsSocket.get(
 			'/mesoMap/1',{},
 			function(response){
-				console.log('old map data for new map',response)
+				
 				var newMap = {};
 				newMap.mapData = response.mapData;
 				newMap.userId = $scope.user.id;
 				sailsSocket.post('/mesoMap/',newMap,function(created){
-					console.log(created);
+				
 					$scope.user.mapId = created.id;
 					sailsSocket.put('/user/'+$scope.user.id, $scope.user,
-					function(done) {
-						$scope.getUserStations();
+						function(done) {
+							$scope.getUserStations();
 					});
 				});
 		});
