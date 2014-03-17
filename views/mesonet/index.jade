@@ -106,8 +106,7 @@ html(ng-app="app")
             br
 
         strong Map Layers
-        Hello
-        .whitebox
+        .whitebox.col-sm-12
           ul#economic(style='list-style: none;')
             li
               a(style='height:35px')#leaflet-marker-pane.active Proposed Mesonet Stations
@@ -121,18 +120,18 @@ html(ng-app="app")
               a(style='height:35px')#floodplain_layer. Flood Hazard Zone
         //strong Export Mesonet Sites
         
-        .whitebox(style='position:absolute;bottom:20px;right:10px;overflow:none;width:90%') 
-          a.btn(ng-click="openModal()" ng-hide="loggedIn" style="float:right;") Login
+        .whitebox.col-sm-12(style='position:absolute;bottom:20px;right:12px;overflow:none;width:90%') 
           .user-info(ng-show="loggedIn") Logged in as 
             strong {{user.username}}
             .greybox(style='height: 60px;')
-              a.btn.btn-primary#add_station.btn(style="margin:5px") Add Station
-              a#export_csv.btn.btn-primary Export CSV
-              span#download
-            
-            a.btn.btn-primary(ng-click="logout()" style="float:right;") Logout
-            a.btn.btn-primary(href='/admin/users' ng-show="user.accessLevel == 1" style="float:right;margin-right:5px;color:#fff") Admin Panel
-            //a.btn(ng-click="loadStops()" style="float:right;") loadStops
+              a.col-sm-12.btn.btn-info.btm-clear(style="margin-bottom:5px" ng-click="saveChanges()") Save Changes
+              a.col-sm-12.btn.btn-primary.btm-clear#add_station(style="margin-bottom:5px" ng-click="addStation()") Add Station
+              a.col-sm-12.btn.btn-primary.btm-clear#export_csv(style="margin-bottom:5px") Export CSV
+              span#download 
+              a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
+              a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
+          a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
+              //a.btn(ng-click="loadStops()" ) loadStops
     #info
 
     script(type="text/ng-template", id="LoginModalContent.html")

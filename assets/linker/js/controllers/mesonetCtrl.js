@@ -4,7 +4,9 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   $scope.loggedIn = false;
   $scope.user = {};
   $scope.stations = [];
-
+  $scope.mesoMap = {};
+  $scope.addMarker = false;
+  $scope.editable = false ;
   $scope.$on('sailsSocket:connect', function(ev, data) {
     // Get Session Status
     sailsSocket.get(
@@ -23,13 +25,47 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 							mesoStation.drawStations();
 							mesoStation.setDraggable(false);
 							$scope.markers = mesoStation.markers;
-							$scope.bindMarkers(false);
+							$scope.bindMarkers($scope.editable);
 				});
 			}
-				
     });
   });
 	
+	mesonet.map.on('click',function(e){
+		if($scope.addMarker){
+			
+			var new_station = $scope.stations[$scope.stations.length-1];
+			new_station.id += 1;
+			new_station.name = "Station "+new_station.id;
+			new_station.lat = e.latlng.lat;
+			new_station.lng = e.latlng.lng;
+			
+			var marker = new L.marker(e.latlng, {icon:mesoStation.mesoIcon, draggable:$scope.editable});
+			mesonet.map.addLayer(marker);
+			new_station.marker = marker;
+			$scope.stations.push(new_station);
+			$scope.markers.push(marker);
+			
+			var newScope = $scope.$new();
+			var n = $compile('<div popup station="stations['+($scope.stations.length-1)+']" editable="'+true+'"></div>')(newScope);
+			marker.bindPopup(n[0]);
+
+			marker.on('dragend', function(event){
+				var emarker = event.target;
+				$scope.stations[i].lng = emarker._latlng.lng;
+				$scope.stations[i].lat = emarker._latlng.lat;
+				$scope.$apply();
+			});
+
+			$scope.addMarker = false;
+		
+		}else{
+		
+			//console.log('no add click');
+		
+		}
+	});
+
 	$scope.$on('sailsSocket:message', function(ev, data) {
 
     $log.debug('New comet message received :: ', data);
@@ -48,18 +84,31 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			sailsSocket.get(
 				'/mesoMap/'+$scope.user.mapId,{},
 				function(response){
-					console.log('stations',response);
+						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
 						mesoStation.stations = $scope.stations;
 						mesoStation.drawStations();
 						mesoStation.setDraggable(true);
 						$scope.markers = mesoStation.markers;
-						$scope.bindMarkers(true);
-						console.log($scope.markers);
+						$scope.editable = true;
+						$scope.bindMarkers($scope.editable);
 			});
 		}else{
 			$scope.newMap();
 		}
+	};
+
+	$scope.saveChanges = function(){
+		$scope.mesoMap.mapData = $scope.stations;
+		$scope.mesoMap.mapData.forEach(function(d){
+			d.marker = [];
+		});
+		console.log($scope.mesoMap);
+		sailsSocket.put(
+			'/mesoMap/',$scope.mesoMap,
+			function(response){
+				console.log('Changes Saved',response);
+		});
 	};
 
 	$scope.newMap = function(){
@@ -97,10 +146,13 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			});
 		});
 		$scope.$watchCollection('stations',function(){
-			console.log('stations updated');
+			//console.log('stations updated');
 		},true);
 	};
 
+	$scope.addStation = function(){
+		$scope.addMarker = true;
+	};
 	
   //
   // Login modal

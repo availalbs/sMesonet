@@ -58,7 +58,7 @@ mesoStation = {
 				station.dragging.enable();
 			}else{
 				station.dragging.disable();
-				console.log(station.dragging.enabled());
+				//console.log(station.dragging.enabled());
 			}
 		});
 	},
