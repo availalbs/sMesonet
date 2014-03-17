@@ -59,7 +59,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			});
 
 			$scope.addMarker = false;
-		
+			$('#map').css('cursor','');
 		}else{
 		
 			//console.log('no add click');
@@ -136,7 +136,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				});
 		});
 	};
-	
+
 	$scope.$on('delete_station', function (evt, value) {
 		var delete_index = -1;
 		$scope.stations.forEach(function(d,i){
@@ -144,10 +144,15 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				delete_index = i;
 			}
 		});
-		console.log('delete station',$scope.stations[delete_index]);
+		console.log('deleted station',$scope.stations[delete_index]);
 		mesonet.map.removeLayer($scope.stations[delete_index].marker);
 		$scope.stations.splice(delete_index,1);
 		$scope.markers.splice(delete_index,1);
+		$scope.bindMarkers($scope.editable);
+		$scope.saveChanged = 'Delete Station '+value;
+		$timeout(function(){
+       $scope.saveChanged = '';
+    },3000);
 	});
 
 	$scope.bindMarkers = function(editable){
@@ -172,6 +177,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 	$scope.addStation = function(){
 		$scope.addMarker = true;
+		$('#map').css('cursor','crosshair');
 	};
 
 	
