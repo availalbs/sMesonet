@@ -33,7 +33,8 @@ html(ng-app="app")
     script(type="text/javascript", src="/linker/js/app.js")
     script(type="text/javascript", src="/linker/js/services/sailsSocket.js")
     script(type="text/javascript", src="/linker/js/directives/popupDirective.js")
-    script(type="text/javascript", src="/linker/js/controllers/mesonetCtrl.js")
+    script(type="text/javascript", 
+      src="/linker/js/controllers/mesonetCtrl.js")
     script(type="text/javascript", src="/linker/js/controllers/sailsSocketCtrl.js")
 
     
@@ -49,11 +50,30 @@ html(ng-app="app")
         a.closed(href='#') Legend
       #legend-detail
         #leaflet-marker-pane_legend
+          strong Proposed Sites
           ul
             li
-              svg(width='20', height='20')
-                circle.station(cx='10', cy='10', r='7', fill='#fff')
-              span Proposed Mesonet Site
+              img(src='/linker/js/images/anemometer_g1_1.png' style="width:20px;height:20px")
+              span Improving Forecasting
+            li
+              img(src='/linker/js/images/profiler.png' style="width:20px;height:20px")
+              span Profiler
+            li
+              img(src='/linker/js/images/university.png' style="width:20px;height:20px")
+              span SUNY System
+            li 
+              img(src='/linker/js/images/high_impact.png' style="width:20px;height:20px")  
+              span Frequent High-Impact Events
+            li  
+              img(src='/linker/js/images/deficient.png' style="width:20px;height:20px")  
+              span Model Deficiency Areas
+            li  
+              img(src='/linker/js/images/beneficial.png' style="width:20px;height:20px")
+              span Beneficial to Other Sectors
+            li  
+              img(src='/linker/js/images/snowy.png' style="width:20px;height:20px")
+              span Snow Measurement
+
         #asos_stations_legend
           ul
             li
