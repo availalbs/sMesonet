@@ -7,14 +7,14 @@ app.directive('popup', function () {
       editable : '='
     },
     controller: function($scope, $timeout) {
-      console.log($scope.editable);
+      //console.log($scope.editable);
       // if($scope.editable == 'true'){
       //   $scope.editable = true;
       // }else{
       //   $scope.editable = false;
       // }
       $scope.$watchCollection('stations',function(){
-        console.log('stations updated directive');
+        //console.log('stations updated directive');
       },true);
 
       

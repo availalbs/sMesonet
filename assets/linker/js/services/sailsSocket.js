@@ -3,7 +3,7 @@
 // See: angular-sails.io.js for sailsSocketFactory
 app.factory('sailsSocket', function(sailsSocketFactory, $log) {
 
-  var sailsSocket = sailsSocketFactory({ reconnectionAttempts: 10 });
+  var sailsSocket = sailsSocketFactory({port:'1340',reconnectionAttempts: 10 });
 
   // Before connecting, you might want to first send a dummy request
   // to the server url in order to retrieve cookies.
