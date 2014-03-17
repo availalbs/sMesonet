@@ -1,5 +1,5 @@
 /*jslint node: true */
-app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,filterFilter){
+app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,filterFilter){
   
   $scope.loggedIn = false;
   $scope.user = {};
@@ -7,6 +7,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   $scope.mesoMap = {};
   $scope.addMarker = false;
   $scope.editable = false ;
+  $scope.saveChanged = '';
   $scope.$on('sailsSocket:connect', function(ev, data) {
     // Get Session Status
     sailsSocket.get(
@@ -108,8 +109,14 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			'/mesoMap/',$scope.mesoMap,
 			function(response){
 				console.log('Changes Saved',response);
+				$scope.saveChanged = 'Changes Saved';
+				$timeout(function(){
+           $scope.saveChanged = '';
+        },3000);
 		});
 	};
+
+
 
 	$scope.newMap = function(){
 		sailsSocket.get(
@@ -129,6 +136,19 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				});
 		});
 	};
+	
+	$scope.$on('delete_station', function (evt, value) {
+		var delete_index = -1;
+		$scope.stations.forEach(function(d,i){
+			if(d.id == value){
+				delete_index = i;
+			}
+		});
+		console.log('delete station',$scope.stations[delete_index]);
+		mesonet.map.removeLayer($scope.stations[delete_index].marker);
+		$scope.stations.splice(delete_index,1);
+		$scope.markers.splice(delete_index,1);
+	});
 
 	$scope.bindMarkers = function(editable){
 		$scope.markers.forEach(function(marker,i){
@@ -153,6 +173,8 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	$scope.addStation = function(){
 		$scope.addMarker = true;
 	};
+
+	
 	
   //
   // Login modal

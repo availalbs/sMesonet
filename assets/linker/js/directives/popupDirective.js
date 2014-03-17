@@ -4,7 +4,8 @@ app.directive('popup', function () {
     templateUrl: '/linker/js/directives/popupTemplate.html',
     scope: {
       station : '=',
-      editable : '='
+      editable : '=',
+      deletes:'&'
     },
     controller: function($scope, $timeout) {
       //console.log($scope.editable);
@@ -17,7 +18,10 @@ app.directive('popup', function () {
         //console.log('stations updated directive');
       },true);
 
-      
+      $scope.deleteStation = function(station_id){
+        $scope.$emit('delete_station', station_id);   
+      };
+
       $scope.changeIcon = function(station){
         switch(station.type){
           case "mesonet":
@@ -44,9 +48,7 @@ app.directive('popup', function () {
         }
       };
 
-      $scope.deleteStation = function(id){
-        console.log('delete station:'+id);
-      };
+   
       $scope.addComment = function(id){
         console.log('add comment to:'+id);
       };

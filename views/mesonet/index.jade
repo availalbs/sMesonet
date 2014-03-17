@@ -123,6 +123,7 @@ html(ng-app="app")
         .whitebox.col-sm-12(style='position:absolute;bottom:20px;right:12px;overflow:none;width:90%') 
           .user-info(ng-show="loggedIn") Logged in as 
             strong {{user.username}}
+            span(style='font-size:12px;float:right;') {{saveChanged}}
             .greybox(style='height: 60px;')
               a.col-sm-12.btn.btn-info.btm-clear(style="margin-bottom:5px" ng-click="saveChanges()") Save Changes
               a.col-sm-12.btn.btn-primary.btm-clear#add_station(style="margin-bottom:5px" ng-click="addStation()") Add Station
