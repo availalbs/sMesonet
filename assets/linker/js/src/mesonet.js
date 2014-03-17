@@ -204,14 +204,14 @@ var mesonet = {
 		loader.run();
 	},
 	initMap : function(){
-		//var satellite = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0pml9h7/{z}/{x}/{y}.png");
+		var satellite = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0pml9h7/{z}/{x}/{y}.png");
 		var terrain = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0pna3ah/{z}/{x}/{y}.png");
-		//var streets = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0po4e8k/{z}/{x}/{y}.png");
-		//mesonet.rainfall = new L.tileLayer('/linker/data/tiles/{z}/{x}/{y}.png', {minZoom: 5, maxZoom: 10,tms: true,opacity:0.5});
-		//mesonet.floodplanes = new L.tileLayer('/public/data/flood_planes/{z}/{x}/{y}.png', {minZoom: 5, maxZoom: 12,tms: true,opacity:1});
+		var streets = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0po4e8k/{z}/{x}/{y}.png");
+		mesonet.rainfall = new L.tileLayer('http://vis.availabs.org/mesonet/data/tiles/{z}/{x}/{y}.png', {minZoom: 5, maxZoom: 10,tms: true,opacity:0.5});
+		mesonet.floodplanes = new L.tileLayer('http://vis.availabs.org/mesonet/data/flood_planes/{z}/{x}/{y}.png', {minZoom: 5, maxZoom: 12,tms: true,opacity:1});
 		var baseMaps = {
-			//"Streets": streets,
-			//"Satellite": satellite,
+			"Streets": streets,
+			"Satellite": satellite,
 			"Terrain": terrain
 		};
 		
@@ -219,10 +219,11 @@ var mesonet = {
 			center: [42.76314586689494,-74.7509765625],
 			zoom: 7,
 			attributionControl:false,
-			layers: [terrain]//streets, satellite
+			layers: [terrain, streets, satellite]//
 		});
 		L.control.layers(baseMaps,{},{position:'topleft'}).addTo(mesonet.map);
-		//mesonet.map.addLayer(mesonet.rainfall);
+		mesonet.map.addLayer(mesonet.rainfall);
+		L.control.scale().addTo(mesonet.map);
 			
 		mesonet.svg = d3.select(mesonet.map.getPanes().overlayPane).append("svg");
 		mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");

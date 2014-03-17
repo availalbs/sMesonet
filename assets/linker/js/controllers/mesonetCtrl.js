@@ -1,6 +1,4 @@
 /*jslint node: true */
-
-
 app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,filterFilter){
   
   $scope.loggedIn = false;

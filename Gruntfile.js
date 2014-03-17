@@ -152,7 +152,8 @@ module.exports = function (grunt) {
           { '.tmp/public/linker/js/angular.js':           './bower_components/angular/angular.js' },
           { '.tmp/public/linker/js/ui-bootstrap.js':      './bower_components/angular-bootstrap/ui-bootstrap.js' },
           { '.tmp/public/linker/js/ui-bootstrap-tpls.js': './bower_components/angular-bootstrap/ui-bootstrap-tpls.js' },
-          { '.tmp/public/linker/js/angular-socket.io.js': './bower_components/angular-socket-io/socket.js' }
+          { '.tmp/public/linker/js/angular-socket.io.js': './bower_components/angular-socket-io/socket.js' },
+          { '.tmp/public/linker/js/angular-resource.js': './bower_components/angular-resource/angular-resource.js' },
         ]
       },
       prod : {

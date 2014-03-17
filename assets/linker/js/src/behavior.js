@@ -2,9 +2,9 @@ $(function(){
 	mesonet.datasource = 'http://vis.availabs.org/mesonet/data/getGrid.php';
 	mesonet.init('map');
 	$('#rainfall_layer_legend').hide();
-	//$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('rainfall_layer').hide();//
-	//mesonet.map.addLayer(mesonet.floodplanes);
-	//$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('floodplain_layer').hide();//
+	$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('rainfall_layer').hide();
+	mesonet.map.addLayer(mesonet.floodplanes);
+	$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('floodplain_layer').hide();
 	$('.county').hide();
 	$('#county_legend').hide();
 	$('#floodplain_layer_legend').hide();
