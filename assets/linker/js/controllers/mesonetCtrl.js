@@ -74,14 +74,14 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   });
   
 	// $scope.loadStops = function(){
-	// 	console.log('load stops',mesonet.stations);
-	// 	sailsSocket.post('/mesomap',{mapData:mesonet.stations,userId:$scope.user.id},function(response){
-	// 		console.log(response);
-	// 	})
+	//	console.log('load stops',mesonet.stations);
+	//	sailsSocket.post('/mesomap',{mapData:mesonet.stations,userId:$scope.user.id},function(response){
+	//		console.log(response);
+	//	})
 	// };
 	
 	$scope.getUserStations = function(){
-		if($scope.user.mapId != -1 && $scope.user.mapId != null){
+		if($scope.user.mapId != -1 && $scope.user.mapId !== null){
 			sailsSocket.get(
 				'/mesoMap/'+$scope.user.mapId,{},
 				function(response){
@@ -137,6 +137,19 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		});
 	};
 
+	$scope.$on('comment', function(evt,value){
+		var modalInstance = $modal.open({
+      templateUrl: 'CommentModalContent.html',
+      controller: CommentModalCtrl,
+      resolve: {
+				user: function () {
+          return $scope.user;
+        },
+        station_id: value
+      }
+    });
+	});
+
 	$scope.$on('delete_station', function (evt, value) {
 		var delete_index = -1;
 		$scope.stations.forEach(function(d,i){
@@ -149,7 +162,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		$scope.stations.splice(delete_index,1);
 		$scope.markers.splice(delete_index,1);
 		$scope.bindMarkers($scope.editable);
-		$scope.saveChanged = 'Delete Station '+value;
+		$scope.saveChanged = 'Deleted Station '+value;
 		$timeout(function(){
        $scope.saveChanged = '';
     },3000);
@@ -215,6 +228,20 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	};
 
 });
+
+function CommentModalCtrl($scope, $modalInstance,sailsSocket,user,station_id) {
+	$scope.message='';
+	$scope.user = user;
+	$scope.station_id = station_id;
+	$scope.comment = {};
+	
+	$scope.ok = function (action,u,p) {
+		$modelInstance.close();
+	};
+	$scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}
 
 function LoginModalCtrl($scope, $modalInstance,sailsSocket) {
 	$scope.username='';

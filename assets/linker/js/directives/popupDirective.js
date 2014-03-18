@@ -8,18 +8,9 @@ app.directive('popup', function () {
       deletes:'&'
     },
     controller: function($scope, $timeout) {
-      //console.log($scope.editable);
-      // if($scope.editable == 'true'){
-      //   $scope.editable = true;
-      // }else{
-      //   $scope.editable = false;
-      // }
-      $scope.$watchCollection('stations',function(){
-        //console.log('stations updated directive');
-      },true);
-
+      
       $scope.deleteStation = function(station_id){
-        $scope.$emit('delete_station', station_id);   
+        $scope.$emit('delete_station', station_id);
       };
 
       $scope.changeIcon = function(station){
@@ -50,7 +41,7 @@ app.directive('popup', function () {
 
    
       $scope.addComment = function(id){
-        console.log('add comment to:'+id);
+        $scope.$emit('comment', id);
       };
     }
   };

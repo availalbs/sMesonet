@@ -5,5 +5,5 @@
  *
  * @type {angular.Module}
  */
-var app = angular.module('app', ['ui.bootstrap', 'sails.io', 'ngResource']);
+var app = angular.module('app', ['ui.bootstrap', 'sails.io']);
 
