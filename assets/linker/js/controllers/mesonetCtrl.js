@@ -1,6 +1,19 @@
 /*jslint node: true */
-app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,filterFilter){
+app.config(['$routeProvider',
+  function($routeProvider) {
+      $routeProvider
+      .when('/map/:map_id', {
+        controller: 'MesonetCtrl'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+  }]);
+
+app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,$http,$routeParams){
   
+ 	console.log('Map Id Set',$routeParams.map_id);
+  var elevator = new google.maps.ElevationService();
   $scope.loggedIn = false;
   $scope.user = {};
   $scope.stations = [];
@@ -19,8 +32,9 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 					$scope.getUserStations();
 				}else{
 					sailsSocket.get(
-					'/mesoMap/1',{},
+					'/mesoMap/4',{},
 					function(response){
+							$scope.mesoMap = response;
 							$scope.stations = response.mapData;
 							mesoStation.stations = $scope.stations;
 							mesoStation.drawStations();
@@ -32,6 +46,32 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
     });
   });
 	
+	$scope.exportStations = function(){
+		var output = [['id','name','type','elevation','lat','lng']];
+		$scope.stations.forEach(function(station){
+			if(!station.elevation){
+				station.elevation = 0;
+			}
+			output.push([station.id,station.name,station.type,station.elevation,station.lat,station.lng]);
+		});
+
+		var csvContent = "data:text/csv;charset=utf-8,";
+		output.forEach(function(infoArray, index){
+			dataString = infoArray.join(",");
+			csvContent += dataString+ "\n";
+		});
+		if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1){
+			var encodedUri = encodeURI(csvContent);
+			var link = document.createElement("a");
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "meso_stations.csv");
+			link.click();
+		}else{
+			var encodedUri = encodeURI(csvContent);
+			window.open(encodedUri);
+		}
+	};
+
 	mesonet.map.on('click',function(e){
 		if($scope.addMarker){
 			
@@ -48,13 +88,14 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			$scope.markers.push(marker);
 			
 			var newScope = $scope.$new();
-			var n = $compile('<div popup station="stations['+($scope.stations.length-1)+']" editable="'+true+'"></div>')(newScope);
+			var n = $compile('<div popup station="stations['+($scope.stations.length-1)+']" editable="'+true+'" mapId="'+$scope.mesoMap.id+'"></div>')(newScope);
 			marker.bindPopup(n[0]);
 
 			marker.on('dragend', function(event){
 				var emarker = event.target;
-				$scope.stations[i].lng = emarker._latlng.lng;
-				$scope.stations[i].lat = emarker._latlng.lat;
+				$scope.stations[$scope.stations.length-1].lng = emarker._latlng.lng;
+				$scope.stations[$scope.stations.length-1].lat = emarker._latlng.lat;
+				getElevation($scope.stations[$scope.stations.length-1].lat, $scope.stations[$scope.stations.length-1].lng,i);
 				$scope.$apply();
 			});
 
@@ -103,6 +144,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		$scope.mesoMap.mapData = $scope.stations;
 		$scope.mesoMap.mapData.forEach(function(d){
 			d.marker = [];
+			delete d.comments;
 		});
 		console.log($scope.mesoMap);
 		sailsSocket.put(
@@ -136,18 +178,37 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				});
 		});
 	};
+	$scope.$on('viewComment',function(evt,station_id){
+		var station_index = -1;
+		$scope.stations.forEach(function(d,i){
+			if(d.id == station_id){
+				station_index = i;
+			}
+		});
+		var modalInstance = $modal.open({
+      templateUrl: 'ViewCommentModalContent.html',
+      controller: ViewCommentModalCtrl,
+      resolve: {
+				comments: function () { return $scope.stations[station_index].comments; },
+      }
+    });
+
+	});
 
 	$scope.$on('comment', function(evt,value){
+		$scope.current_station = value;
 		var modalInstance = $modal.open({
       templateUrl: 'CommentModalContent.html',
       controller: CommentModalCtrl,
       resolve: {
-				user: function () {
-          return $scope.user;
-        },
-        station_id: value
+				user: function () { return $scope.user; },
+        station_id: function () { return $scope.current_station; },
+        map_id: function () { return $scope.mesoMap.id; }
       }
     });
+		modalInstance.result.then(function (result) {
+			//if()
+		});
 	});
 
 	$scope.$on('delete_station', function (evt, value) {
@@ -157,7 +218,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				delete_index = i;
 			}
 		});
-		console.log('deleted station',$scope.stations[delete_index]);
+		
 		mesonet.map.removeLayer($scope.stations[delete_index].marker);
 		$scope.stations.splice(delete_index,1);
 		$scope.markers.splice(delete_index,1);
@@ -166,6 +227,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		$timeout(function(){
        $scope.saveChanged = '';
     },3000);
+	
 	});
 
 	$scope.bindMarkers = function(editable){
@@ -173,19 +235,26 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			$scope.stations[i].currentIndex = i;
 			$scope.stations[i].marker = marker;
 			var newScope = $scope.$new();
-			var e = $compile('<div popup station="stations['+i+']" editable="'+editable+'"></div>')(newScope);
+			var e = $compile('<div popup station="stations['+i+']" editable="'+editable+'" mapId="'+$scope.mesoMap.id+'"></div>')(newScope);
 			marker.bindPopup(e[0]);
 
 			marker.on('dragend', function(event){
 				var emarker = event.target;
 				$scope.stations[i].lng = emarker._latlng.lng;
 				$scope.stations[i].lat = emarker._latlng.lat;
+				getElevation($scope.stations[i].lat, $scope.stations[i].lng,i);
 				$scope.$apply();
 			});
+			marker.on('click',function(event){
+				if(!$scope.stations[i].elevation){
+					getElevation($scope.stations[i].lat, $scope.stations[i].lng,i);
+				}
+				sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[i].id}},
+					function(response){
+						$scope.stations[i].comments = response;
+					});
+			});
 		});
-		$scope.$watchCollection('stations',function(){
-			//console.log('stations updated');
-		},true);
 	};
 
 	$scope.addStation = function(){
@@ -193,8 +262,23 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		$('#map').css('cursor','crosshair');
 	};
 
-	
-	
+	function getElevation(lat,lng,i){
+		var locations = [];
+		var coords =  new google.maps.LatLng(lat, lng);
+		locations.push(coords);
+		var positionalRequest = {
+			'locations': locations
+		};
+		elevator.getElevationForLocations(positionalRequest, function(results, status) {
+			if (status == google.maps.ElevationStatus.OK) {
+				// Retrieve the first result
+				if (results[0]) {
+					$scope.stations[i].elevation =  results[0].elevation.toFixed(2);
+				}
+			}
+		});
+		
+	};
   //
   // Login modal
   //
@@ -229,18 +313,40 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 });
 
-function CommentModalCtrl($scope, $modalInstance,sailsSocket,user,station_id) {
+function CommentModalCtrl($scope, $modalInstance,sailsSocket,user,station_id,map_id) {
 	$scope.message='';
 	$scope.user = user;
 	$scope.station_id = station_id;
 	$scope.comment = {};
+	$scope.comment.mapId = map_id;
+	$scope.comment.stationId = station_id;
+
+	console.log('halo',station_id,map_id);
+	if($scope.user.id){
 	
-	$scope.ok = function (action,u,p) {
-		$modelInstance.close();
+		$scope.comment.userId = $scope.user.id;
+		$scope.comment.username = $scope.user.username;
+	
+	} else { $scope.comment.userId = -1; }
+
+	$scope.ok = function (action) {
+		console.log($scope.comment);
+		sailsSocket.post('/comment',$scope.comment,
+			function(response){
+				$modalInstance.close({comment_id : response.id});
+		});
 	};
 	$scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+}
+
+function ViewCommentModalCtrl($scope, $modalInstance,comments) {
+	$scope.comments = comments;
+	
+  $scope.ok = function (action,u,p) {
+			$modalInstance.close();
+	};
 }
 
 function LoginModalCtrl($scope, $modalInstance,sailsSocket) {

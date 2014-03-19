@@ -51,16 +51,8 @@ var mesonet = {
 		loader.run();
 	},
 	loadASOS :function(){
-		$.ajax({url:'http://vis.availabs.org/mesonet/data/getASOS.php',
-				type : 'POST',
-				dataType:'json',
-				async:false
-		})
-		.done(function(data) {
-			mesonet.asos = data;
-
-		})
-		.fail(function(data) { console.log(data.responseText); });
+		mesonet.asos = 
+[{'station_name':'KALB','elevation':89,'latitude':42.75,'longitude':-73.8},{'station_name':'KART','elevation':99,'latitude':44,'longitude':-76.02},{'station_name':'KBGM','elevation':497,'latitude':42.22,'longitude':-75.98},{'station_name':'KBUF','elevation':215,'latitude':42.93,'longitude':-78.73},{'station_name':'KDKK','elevation':211,'latitude':42.5,'longitude':-79.28},{'station_name':'KDSV','elevation':209,'latitude':42.58,'longitude':-77.72},{'station_name':'KELM','elevation':291,'latitude':42.17,'longitude':-76.9},{'station_name':'KELZ','elevation':647,'latitude':42.12,'longitude':-77.98},{'station_name':'KFOK','elevation':20,'latitude':40.85,'longitude':-72.63},{'station_name':'KFRG','elevation':25,'latitude':40.73,'longitude':-73.42},{'station_name':'KFZY','elevation':138,'latitude':43.3,'longitude':-76.39},{'station_name':'KGFL','elevation':100,'latitude':43.33,'longitude':-73.62},{'station_name':'KHPN','elevation':134,'latitude':41.07,'longitude':-73.7},{'station_name':'KHWV','elevation':25,'latitude':40.83,'longitude':-72.87},{'station_name':'KIAG','elevation':180,'latitude':43.1,'longitude':-78.95},{'station_name':'KISP','elevation':30,'latitude':40.8,'longitude':-73.1},{'station_name':'KJFK','elevation':7,'latitude':40.65,'longitude':-73.78},{'station_name':'KLGA','elevation':3,'latitude':40.78,'longitude':-73.88},{'station_name':'KMGJ','elevation':111,'latitude':41.51,'longitude':-74.27},{'station_name':'KMSS','elevation':65,'latitude':44.93,'longitude':-74.85},{'station_name':'KNYC','elevation':33,'latitude':40.78,'longitude':-73.97},{'station_name':'KPBG','elevation':72,'latitude':44.65,'longitude':-73.47},{'station_name':'KPEO','elevation':275,'latitude':42.65,'longitude':-77.05},{'station_name':'KPOU','elevation':51,'latitude':41.63,'longitude':-73.88},{'station_name':'KRME','elevation':154,'latitude':43.23,'longitude':-75.4},{'station_name':'KROC','elevation':169,'latitude':43.12,'longitude':-77.67},{'station_name':'KSLK','elevation':507,'latitude':44.38,'longitude':-74.2},{'station_name':'KSYR','elevation':124,'latitude':43.12,'longitude':-76.12}];
 		loader.run();
 	},
 	loadData : function() {

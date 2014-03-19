@@ -14,6 +14,7 @@ html(ng-app="app")
     link(rel='stylesheet', type='text/css', href='/linker/styles/leaflet.css')
     
     //  Javascript Includes 
+    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false")
     script(type='text/javascript', src='/linker/js/jquery-1.9.1.min.js')
     script(type='text/javascript', src='/linker/js/d3.v3.min.js')
     script(type='text/javascript', src='/linker/js/nyCounties.js')
@@ -33,8 +34,7 @@ html(ng-app="app")
     script(type="text/javascript", src="/linker/js/app.js")
     script(type="text/javascript", src="/linker/js/services/sailsSocket.js")
     script(type="text/javascript", src="/linker/js/directives/popupDirective.js")
-    script(type="text/javascript", 
-      src="/linker/js/controllers/mesonetCtrl.js")
+    script(type="text/javascript", src="/linker/js/controllers/mesonetCtrl.js")
     script(type="text/javascript", src="/linker/js/controllers/sailsSocketCtrl.js")
 
     
@@ -147,7 +147,7 @@ html(ng-app="app")
             .greybox(style='height: 60px;')
               a.col-sm-12.btn.btn-info.btm-clear(style="margin-bottom:5px" ng-click="saveChanges()") Save Changes
               a.col-sm-12.btn.btn-primary.btm-clear#add_station(style="margin-bottom:5px" ng-click="addStation()") Add Station
-              a.col-sm-12.btn.btn-primary.btm-clear#export_csv(style="margin-bottom:5px") Export CSV
+              a.col-sm-12.btn.btn-primary.btm-clear#export_csv(style="margin-bottom:5px" ng-click="exportStations()") Export CSV
               span#download 
               a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
               a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
@@ -183,19 +183,41 @@ html(ng-app="app")
         .alert.alert-danger(ng-show="message!=''") {{message}}
         form.form-horizontal(role="form", action="/login", method="post")
           .form-group
-            label.col-sm-2.control-label(for="Comment") Comment
-            .col-sm-10
+            .col-sm-12
               textarea.form-control( placeholder="Comment", name="Comment" ng-model="comment.body")
           .form-group(ng-hide="user.id")
             label.col-sm-2.control-label(for="loginUsername") Name
             .col-sm-10
-              input.form-control(type="text", id="loginUsername", name="username", placeholder="Your name", ng-model="comment.anon_user")
+              input.form-control(type="text", id="loginUsername", name="username", placeholder="Your name", ng-model="comment.username")
           .form-group(ng-show="user.id")
-            label.control-label {{ user.username }}
+            label.control-label(style="float:right;margin-right:10px;") 
+              ='Commenting as ' 
+              strong {{ user.username }}
       .modal-footer
         .form-group
             button.btn.btn-primary(ng-click="ok('submit')") Submit
             button.btn.btn-default(ng-click="cancel()") Cancel
+
+    script(type="text/ng-template", id="ViewCommentModalContent.html")
+      .modal-header
+        h3.panel-title.modal-title
+          = 'Comments on Station {{station_id}}' 
+      .modal-body(style='height:200px;overflow-y:scroll;')
+        table.table.table-hover
+          thead
+            tr
+              th 
+                strong User
+              th 
+                strong Comment
+          tbody
+            tr(ng-repeat="comment in comments")
+              td {{comment.username}}
+              td {{comment.body}}
+      .modal-footer
+        .form-group
+            button.btn.btn-primary(ng-click="ok('submit')") Ok
+           
             
 
     script(type="text/ng-template", id="errorModalContent.html")

@@ -24,11 +24,16 @@
 	  	<td><strong>Location:</strong></td><td>{{station.lat | number}},{{station.lng | number}}</td>
 		</tr>
 		<tr>
-	  	<td><strong>Elevation:</strong></td><td></td>
+	  	<td><strong>Elevation:</strong></td><td>{{station.elevation}} meters</td>
 		</tr>
 		<tr>
-			<td><button ng-show='editable' class='btn btn-danger' style="background-color: #d2322d;border-color: #ac2925;" ng-click="deleteStation(station.id)">Delete</button></td>
-			<td><button class='btn btn-default' ng-click="addComment(station.id)">Comment</button></td>
+			<td>
+				<button ng-show='editable' class='btn btn-danger' style="background-color: #d2322d;border-color: #ac2925;" ng-click="deleteStation(station.id)">Delete</button>
+			</td>
+			<td>
+				<button class='btn btn-default col-sm-5' ng-click="addComment(station.id)" style="font-size:10px">Comment</button>
+				<button class='btn btn-default col-sm-7' ng-click="viewComments(station.id)" style="font-size:10px;" ng-disabled="station.comments.length == 0">View Comments ({{station.comments.length}})</button>
+			</td>
 		<tr>
 		</table>
 	</div>
