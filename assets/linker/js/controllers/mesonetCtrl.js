@@ -1,18 +1,6 @@
 /*jslint node: true */
-app.config(['$routeProvider',
-  function($routeProvider) {
-      $routeProvider
-      .when('/map/:map_id', {
-        controller: 'MesonetCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  }]);
+app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,$http){
 
-app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,$http,$routeParams){
-  
- 	console.log('Map Id Set',$routeParams.map_id);
   var elevator = new google.maps.ElevationService();
   $scope.loggedIn = false;
   $scope.user = {};
