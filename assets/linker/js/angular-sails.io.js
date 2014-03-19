@@ -18,8 +18,8 @@ angular.module('sails.io', [])
   .factory('sailsSocketFactory', function($rootScope, $http, $timeout, $location, $log) {
 
     var optionDefaults = {
-      url: $location.path(),
-      //url: 'http://vis.availabs.org:1340',
+      //url: $location.path(),
+      url: 'mesonet.availabs.org:1340',
       defaultScope: $rootScope,
       eventPrefix: 'sailsSocket:',
       eventForwards: ['connect', 'message', 'disconnect', 'error'],
