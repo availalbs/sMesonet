@@ -36,29 +36,7 @@ $(function(){
 		mesonet.updateMap();
 	});
 
-	$('#export_csv').on('click',function(){
-		var outputs = [];
-		mesonet.markers.forEach(function(d,i){
-			var marker = {};
-			marker.id = (i*1+1);
-			marker.lat = mesonet.markers[i]._latlng.lat;
-			marker.lon = mesonet.markers[i]._latlng.lng;
-			outputs.push(marker);
-		})
 
-		$.ajax({url:'http://vis.availabs.org/mesonet/data/export_csv.php',
-				type : 'POST',
-				data: {markers:outputs},
-				dataType:'json',
-				async:false
-		})
-		.done(function(data) {
-			$('#download').html("<a href='http://vis.availabs.org/mesonet/data/exports/mesonet_stations.csv'>[Download]</a>")
-		})
-		.fail(function(data) { console.log(data.responseText); });
-
-
-	})
 	$('#economic li a').on('click',function(){
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');

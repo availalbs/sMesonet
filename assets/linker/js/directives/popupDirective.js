@@ -5,13 +5,15 @@ app.directive('popup', function () {
     scope: {
       station : '=',
       editable : '=',
+      mapId: '=',
       deletes:'&'
     },
-    controller: function($scope, $timeout) {
+    controller: function($scope, $timeout, sailsSocket) {
       
       $scope.deleteStation = function(station_id){
         $scope.$emit('delete_station', station_id);
       };
+      
 
       $scope.changeIcon = function(station){
         switch(station.type){
@@ -38,7 +40,10 @@ app.directive('popup', function () {
             break;
         }
       };
-
+      
+      $scope.viewComments = function(id){
+        $scope.$emit('viewComment',id);
+      }
    
       $scope.addComment = function(id){
         $scope.$emit('comment', id);
