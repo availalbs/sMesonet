@@ -7,11 +7,11 @@
  		<tr>
 			<td><strong>Station Id:</stong></td><td>{{station.id}}</td>
 		</tr>
-		<tr>
+		<tr ng-hide="!editable || station.type == 'user'">
 	  	<td><strong>Station Type:</strong></td>
 			<td>
-		  	<select ng-model="station.type" ng-change='changeIcon(station)' style='padding:5px;background-color:#fff' ng-disabled="!editable">
-			  	<option value='mesonet'> Improving forecasting</option>
+		  	<select ng-model="station.type" ng-change='changeIcon(station)' style='padding:5px;background-color:#fff'>
+			  	<option value='imp'> Improving forecasting</option>
 			  	<option value='profiler'> Profiler site </option>
 			  	<option value='suny'> SUNY System Site</option>
 			  	<option value='high-impact'> Frequent high-impact events </option>

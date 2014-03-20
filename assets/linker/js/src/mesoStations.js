@@ -10,6 +10,7 @@ mesoStation = {
 	deficiencyIcon:L.icon({iconUrl: '/linker/js/images/deficient.png',iconSize: [24, 24],iconAnchor: [ 24/2,24],popupAnchor:[0,-18]}),
 	other_sectorsIcon:L.icon({iconUrl: '/linker/js/images/beneficial.png',iconSize: [24, 24],iconAnchor: [ 24/2,24],popupAnchor:[0,-18]}),
 	snowIcon:L.icon({iconUrl: '/linker/js/images/snowy.png',iconSize: [24, 24],iconAnchor: [ 24/2,24],popupAnchor:[0,-18]}),
+	userIcon:L.icon({iconUrl: '/linker/js/images/imp_forecasting.png',iconSize: [24, 24],iconAnchor: [ 24/2,24],popupAnchor:[0,-18]}),
 	drawStations : function() {
 
 		if(mesoStation.markers.length > 0) { mesoStation.clearMarkers(); }
@@ -38,6 +39,9 @@ mesoStation = {
 					break;
 				case 'snow':
 					station.setIcon(mesoStation.snowIcon);
+					break;
+				case 'user':
+					station.setIcon(mesoStation.userIcon);
 					break;
 			}
 

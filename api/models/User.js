@@ -38,6 +38,7 @@ module.exports = {
       type: 'Integer',
       defaultsTo: -1
     },
+    stations: 'ARRAY',
     // Override toJSON instance method to remove password value
     toJSON: function() {
       var obj = this.toObject();

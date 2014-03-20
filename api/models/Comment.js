@@ -13,6 +13,7 @@ module.exports = {
 		stationId : 'integer',
 		userId : 'integer',
 		username : 'string',
+		type : 'string',
 		body : 'text'
   }
 
