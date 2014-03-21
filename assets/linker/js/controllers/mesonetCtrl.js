@@ -72,7 +72,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				response.forEach(function(comment){
 					output.push([comment.username,comment.stationId,comment.type,comment.body,comment.createdAt]);
 				})
-				downloadCSV(output,"mesonet_comments.csv");
+				downloadCSV(output,"mesonet_comments.csv",'#export_comments');
 			}
 		);
 		
@@ -86,11 +86,11 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			}
 			output.push([station.id,station.name,station.type,station.elevation,station.lat,station.lng]);
 		});
-		downloadCSV(output,"meso_stations.csv");
+		downloadCSV(output,"meso_stations.csv",'#export_stations');
 		
 	};
 
-	function downloadCSV(output,filename){
+	function downloadCSV(output,filename,container){
 		var csvContent = "data:text/csv;charset=utf-8,";
 		output.forEach(function(infoArray, index){
 			dataString = infoArray.join(",");
@@ -105,7 +105,13 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			link.click();
 		}else{
 			var encodedUri = encodeURI(csvContent);
-			window.open(encodedUri);
+			//window.open(encodedUri);
+			 $(container)
+            .attr({
+            'download': filename,
+                'href': encodedUri,
+                'target': '_blank'
+        });
 		}
 	};
 
