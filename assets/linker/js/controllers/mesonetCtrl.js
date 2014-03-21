@@ -1,6 +1,7 @@
 /*jslint node: true */
 app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, $log,$compile,$timeout,$http){
 
+  $('#main-nav').css('display','block');
   var elevator = new google.maps.ElevationService();
   $scope.loggedIn = false;
   $scope.user = {};
@@ -86,7 +87,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			}
 			output.push([station.id,station.name,station.type,station.elevation,station.lat,station.lng]);
 		});
-		downloadCSV(output,"meso_stations.csv",'#export_stations');
+		downloadCSV(output,"meso_stations.csv",'#export_csv');
 		
 	};
 
@@ -442,4 +443,5 @@ function LoginModalCtrl($scope, $modalInstance,sailsSocket) {
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+ 
 }
