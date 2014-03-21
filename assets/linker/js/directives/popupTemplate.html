@@ -11,13 +11,13 @@
 	  	<td><strong>Station Type:</strong></td>
 			<td>
 		  	<select ng-model="station.type" ng-change='changeIcon(station)' style='padding:5px;background-color:#fff'>
-			  	<option value='imp'> Improving forecasting</option>
+			  	<option value='mesonet'> Mesonet Site</option>
 			  	<option value='profiler'> Profiler site </option>
 			  	<option value='suny'> SUNY System Site</option>
-			  	<option value='high-impact'> Frequent high-impact events </option>
+			  <!-- 	<option value='high-impact'> Frequent high-impact events </option>
 			  	<option value='deficiency'> Model deficiency areas </option>
 			  	<option value='other-sectors'> Beneficial to other sectors </option>
-			  	<option value='snow'> Snow measurement site </option>
+			  	<option value='snow'> Snow measurement site </option> -->
 		  	</select>
 		  </td>
 	  <tr>
@@ -32,7 +32,7 @@
 			</td>
 			<td>
 				<button class='btn btn-default col-sm-5' ng-click="addComment(station.id)" style="font-size:10px">Comment</button>
-				<button class='btn btn-default col-sm-7' ng-click="viewComments(station.id)" style="font-size:10px;" ng-disabled="station.comments.length == 0">View Comments ({{station.comments.length}})</button>
+				<button class='btn btn-default col-sm-7' ng-click="viewComments(station.id)" style="font-size:10px;padding-left:7px;" ng-disabled="station.comments.length == 0">View Comments ({{station.comments.length}})</button>
 			</td>
 		<tr>
 		</table>

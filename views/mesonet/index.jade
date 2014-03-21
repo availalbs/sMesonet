@@ -52,13 +52,13 @@ html(ng-app="app")
           strong Proposed Sites
           ul
             li
-              img(src='/linker/js/images/anemometer_g1_1.png' style="width:20px;height:20px")
+              img(src='/linker/js/images/green.png' style="width:20px;height:20px")
               span Mesonet Site
             li
-              img(src='/linker/js/images/profiler.png' style="width:20px;height:20px")
+              img(src='/linker/js/images/orange.png' style="width:20px;height:20px")
               span Mesonet Profiler
             li
-              img(src='/linker/js/images/university.png' style="width:20px;height:20px")
+              img(src='/linker/js/images/blue.png' style="width:20px;height:20px")
               span Mesonet SUNY System
             li 
               img(src='/linker/js/images/imp_forecasting.png' style="width:20px;height:20px")  
@@ -175,8 +175,8 @@ html(ng-app="app")
         form.form-horizontal(role="form", action="/login", method="post")
           .form-group
             .col-sm-12
-              ='Reason for station'
-                select(ng-model='comment.type', ng-change='changeIcon(station)', style='padding: 5px; background-color: #fff;')
+              ='Reason for station '
+                select(ng-model='comment.type', ng-change='changeIcon(station)', style='padding: 5px; background-color: #fff;border:1px solid')
                   option(value='improving')  Improving forecasting
                   option(value='profiler')  Profiler site 
                   option(value='high-impact')  Frequent high-impact events 

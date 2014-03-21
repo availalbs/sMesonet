@@ -41,7 +41,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
-						if($scope.user.stations){
+						if($scope.user.stations && $scope.user.accessLevel !== 1){
 							if($scope.user.stations.length > 0){
 								$scope.user.stations.forEach(function(station){
 									$scope.stations.push(station);
@@ -51,7 +51,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 						mesoStation.stations = $scope.stations;
 						mesoStation.drawStations();
 						
-						if($scope.user.accesslevel == 1) {
+						if($scope.user.accessLevel == 1) {
 							$scope.editable = true;
 						}
 
@@ -68,7 +68,6 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	$scope.exportComments = function (){
 		sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id}},
 			function(response){
-				console.log(response);
 				var output  = [['user','station_id','type','body','createdAt']];
 				response.forEach(function(comment){
 					output.push([comment.username,comment.stationId,comment.type,comment.body,comment.createdAt]);
@@ -97,11 +96,12 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			dataString = infoArray.join(",");
 			csvContent += dataString+ "\n";
 		});
-		if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1){
+		if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 ){
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");
 			link.setAttribute("href", encodedUri);
 			link.setAttribute("download", filename);
+			link.setAttribute('target', '_blank');
 			link.click();
 		}else{
 			var encodedUri = encodeURI(csvContent);
@@ -119,7 +119,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			new_station.lng = e.latlng.lng;
 
 			var marker = {};
-			if($scope.user.accesslevel == 1){
+			if($scope.user.accessLevel == 1){
 				new_station.type='mesonet';
 				marker = new L.marker(e.latlng, {icon:mesoStation.mesoIcon, draggable:true});
 			}else{
@@ -132,7 +132,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			mesonet.map.addLayer(marker);
 			new_station.marker = marker;
 			$scope.stations.push(new_station);
-			if($scope.user.accesslevel !== 1){
+			if($scope.user.accessLevel !== 1){
 				if(!$scope.user.stations){
 					$scope.user.stations = [];
 				}
@@ -150,6 +150,16 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.stations[$scope.stations.length-1].lat = emarker._latlng.lat;
 				getElevation($scope.stations[$scope.stations.length-1].lat, $scope.stations[$scope.stations.length-1].lng,$scope.stations.length-1);
 				$scope.$apply();
+			});
+
+			marker.on('click',function(event){
+				if(!$scope.stations[i].elevation){
+					getElevation($scope.stations[i].lat, $scope.stations[i].lng,i);
+				}
+				sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[$scope.stations.length-1].id}},
+					function(response){
+						$scope.stations[$scope.stations.length-1].comments = response;
+					});
 			});
 
 			$scope.addMarker = false;
@@ -177,7 +187,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	
 
 	$scope.saveChanges = function(){
-		if($scope.user.accesslevel == 1){
+		if($scope.user.accessLevel == 1){
 			$scope.mesoMap.mapData = $scope.stations;
 			$scope.mesoMap.mapData.forEach(function(d){
 				d.marker = [];
