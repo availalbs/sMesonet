@@ -126,25 +126,18 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			new_station.lng = e.latlng.lng;
 
 			var marker = {};
-			if($scope.user.accessLevel == 1){
-				new_station.type='mesonet';
-				marker = new L.marker(e.latlng, {icon:mesoStation.mesoIcon, draggable:true});
-			}else{
 				new_station.type='user';
 				marker = new L.marker(e.latlng, {icon:mesoStation.userIcon, draggable:true});
-
-			}
 			
 			
 			mesonet.map.addLayer(marker);
 			new_station.marker = marker;
 			$scope.stations.push(new_station);
-			if($scope.user.accessLevel !== 1){
-				if(!$scope.user.stations){
-					$scope.user.stations = [];
-				}
-				$scope.user.stations.push($scope.stations[$scope.stations.length-1]);
+			if(!$scope.user.stations){
+				$scope.user.stations = [];
 			}
+			$scope.user.stations.push($scope.stations[$scope.stations.length-1]);
+			
 			$scope.markers.push(marker);
 			
 			var newScope = $scope.$new();
@@ -194,40 +187,22 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	
 
 	$scope.saveChanges = function(){
-		if($scope.user.accessLevel == 1){
-			$scope.mesoMap.mapData = $scope.stations;
-			$scope.mesoMap.mapData.forEach(function(d){
-				d.marker = [];
-				delete d.comments;
+
+		$scope.user.stations.forEach(function(d){
+			d.marker = [];
+			delete d.comments;
+		});
+		sailsSocket.put(
+			'/user/'+$scope.user.id,$scope.user,
+			function(response){
+				console.log('Changes Saved',response);
+				$scope.saveChanged = 'Changes Saved';
+				$timeout(function(){
+           $scope.saveChanged = '';
+        },3000);
 			});
-			console.log($scope.mesoMap);
-			sailsSocket.put(
-				'/mesoMap/',$scope.mesoMap,
-				function(response){
-					console.log('Changes Saved',response);
-					$scope.saveChanged = 'Changes Saved';
-					$timeout(function(){
-	           $scope.saveChanged = '';
-	        },3000);
-			});
-		}else{
-			$scope.user.stations.forEach(function(d){
-				d.marker = [];
-				delete d.comments;
-			});
-			sailsSocket.put(
-				'/user/'+$scope.user.id,$scope.user,
-				function(response){
-					console.log('Changes Saved',response);
-					$scope.saveChanged = 'Changes Saved';
-					$timeout(function(){
-	           $scope.saveChanged = '';
-	        },3000);
-				});
-		}
+	
 	};
-
-
 
 	$scope.newMap = function(){
 		sailsSocket.get(
