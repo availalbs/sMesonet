@@ -13,6 +13,12 @@ app.controller('adminUserCtrl', function TodoCtrl($scope, $modal, sailsSocket, $
       '/admin/userList', {},
       function(response) {
         $scope.users = response;
+        console.log($scope.users);
+        $scope.users.forEach(function(user){
+          if(!user.stations){
+            user.stations = [];
+          }
+        })
         //$log.debug('sailsSocket::/userList', response);
     });
   });

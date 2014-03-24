@@ -320,10 +320,17 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				if(!$scope.stations[i].elevation){
 					getElevation($scope.stations[i].lat, $scope.stations[i].lng,i);
 				}
-				sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[i].id}},
+				if($scope.user.accessLevel == 1){
+					sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[i].id}},
 					function(response){
 						$scope.stations[i].comments = response;
 					});
+				}else{
+					sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[i].id,"userId":$scope.user.id}},
+					function(response){
+						$scope.stations[i].comments = response;
+					});
+				}
 			});
 		});
 	};

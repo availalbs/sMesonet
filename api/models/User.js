@@ -25,6 +25,13 @@ module.exports = {
       required: true,
       minLength: 6
     },
+    loginCount : {
+      type: 'integer',
+      defaultsTo: 0
+    },
+    lastLogin : {
+      type: 'datetime'
+    },
     email: {
       type: 'email',
       required: true,

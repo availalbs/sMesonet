@@ -39,6 +39,15 @@ var PassportAuthController = {
       }
       req.logIn(user, function(err) {
         if (err) return next(err);
+        if(!user.loginCount){
+          user.loginCount = 1;
+        }else{
+          user.loginCount +=1;
+        }
+        user.lastLogin = new Date();
+        user.save(function(err){
+           if (err) console.log(err);
+        });
         return res.send({status:'success',user_info:user});
       });
     })(req, res, next);
