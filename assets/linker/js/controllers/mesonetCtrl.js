@@ -42,6 +42,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
+						console.log('getUserStations',$scope.user.stations);
 						if($scope.user.stations){
 							if($scope.user.stations.length > 0){
 								$scope.user.stations.forEach(function(station){
@@ -137,7 +138,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.user.stations = [];
 			};
 			$scope.user.stations.push($scope.stations[$scope.stations.length-1]);
-			
+			console.log('add station',$scope.user.stations);
 			$scope.markers.push(marker);
 			
 			var newScope = $scope.$new();
@@ -188,16 +189,15 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 	$scope.saveChanges = function(){
 		if($scope.user.accessLevel == 1){
-			$scope.mesoMap.mapData = $scope.stations;
+			$scope.mesoMap.mapData = angular.copy($scope.stations);
 			$scope.mesoMap.mapData.forEach(function(d){
 				d.marker = [];
 				delete d.comments;
 			});
-			console.log($scope.mesoMap);
 			sailsSocket.put(
 				'/mesoMap/',$scope.mesoMap,
 				function(response){
-					console.log('Changes Saved',response);
+					
 					$scope.saveChanged = 'Changes Saved';
 					$timeout(function(){
 	           $scope.saveChanged = '';
@@ -211,12 +211,18 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		sailsSocket.put(
 			'/user/'+$scope.user.id,$scope.user,
 			function(response){
+				console.log('save changes',$scope.user.stations);
+				sailsSocket.get('/user/'+$scope.user.id,function(response){
+					$scope.user.stations = response.stations;
+					$scope.getUserStations();	
+				})
 				$scope.saveChanged = 'Changes Saved';
 				$timeout(function(){
            $scope.saveChanged = '';
         },3000);
 			});
-						
+		
+					
 	};
 
 	$scope.newMap = function(){
