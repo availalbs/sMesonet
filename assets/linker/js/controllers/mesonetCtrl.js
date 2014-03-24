@@ -187,7 +187,23 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	
 
 	$scope.saveChanges = function(){
-
+		if($scope.user.accessLevel == 1){
+			$scope.mesoMap.mapData = $scope.stations;
+			$scope.mesoMap.mapData.forEach(function(d){
+				d.marker = [];
+				delete d.comments;
+			});
+			console.log($scope.mesoMap);
+			sailsSocket.put(
+				'/mesoMap/',$scope.mesoMap,
+				function(response){
+					console.log('Changes Saved',response);
+					$scope.saveChanged = 'Changes Saved';
+					$timeout(function(){
+	           $scope.saveChanged = '';
+	        },3000);
+			});
+		}
 		$scope.user.stations.forEach(function(d){
 			d.marker = [];
 			delete d.comments;
@@ -195,7 +211,6 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		sailsSocket.put(
 			'/user/'+$scope.user.id,$scope.user,
 			function(response){
-				$scope.getUserStations();
 				$scope.saveChanged = 'Changes Saved';
 				$timeout(function(){
            $scope.saveChanged = '';
@@ -283,15 +298,18 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				delete d.comments;
 			});
 			$scope.saveChanges();
+			$timeout(function(){
+       $scope.getUserStations();
+    	},3000);
+			
+				
     }
     mesonet.map.removeLayer($scope.stations[delete_index].marker);
 		$scope.stations.splice(delete_index,1);
 		$scope.markers.splice(delete_index,1);
 		$scope.bindMarkers($scope.editable);
 		$scope.saveChanged = 'Deleted Station '+value;
-		$timeout(function(){
-       $scope.saveChanged = '';
-    },3000);
+		
 
 	
 	});
@@ -331,6 +349,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 						$scope.stations[i].comments = response;
 					});
 				}
+				
 			});
 		});
 	};
