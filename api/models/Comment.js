@@ -7,7 +7,6 @@
  */
 
 module.exports = {
-
   attributes: {
 		mapId : 'integer',
 		stationId : 'integer',
@@ -16,5 +15,4 @@ module.exports = {
 		type : 'string',
 		body : 'text'
   }
-
 };

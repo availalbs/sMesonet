@@ -6,7 +6,8 @@ app.directive('popup', function () {
       station : '=',
       editable : '=',
       mapId: '=',
-      deletes:'&'
+      deletes:'&',
+      saved: '=',
     },
     controller: function($scope, $timeout, sailsSocket) {
       

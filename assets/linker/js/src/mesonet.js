@@ -174,7 +174,7 @@ var mesonet = {
 					cy: function(d,i) {
 						return mesonet.project([d.longitude*1,d.latitude*1])[1];
 					},
-					"fill": "#e74c3c",
+					"fill": "#ff0",
 					"station_name": function(d,i) {
 						return d.station_name;
 					},
