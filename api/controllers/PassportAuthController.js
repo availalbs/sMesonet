@@ -45,6 +45,7 @@ var PassportAuthController = {
           user.loginCount +=1;
         }
         user.lastLogin = new Date();
+        delete user.password;
         user.save(function(err){
            if (err) console.log(err);
         });
