@@ -95,18 +95,24 @@ function UserModalCtrl($scope, $modalInstance,sailsSocket,user) {
   };
 
   $scope.parseResponse = function(response,type){
-    //console.log(response);
+    console.log(response,type);
     if(response.status == 500){
       var error = response.error;
       if(type == 'post'){
         error = response.errors[0];
       }
-      if(error.ValidationError){
+      console.log(error);
+      if(typeof error == 'string'){
+        $scope.message = error;
+      }
+      else if(error.ValidationError){
         $scope.message = '';
         for(var key in error.ValidationError){
           $scope.message+=key;
           $scope.message+=' - '+error.ValidationError[key][0].message+'\n';
         }
+      }else {
+        $scope.message = "Unknown error - "+JSON.stringify(response);
       }
     }else{
       $modalInstance.close();

@@ -72,7 +72,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			function(response){
 				var output  = [['user','station_id','type','body','createdAt']];
 				response.forEach(function(comment){
-					output.push([comment.username,comment.stationId,comment.type,comment.body,comment.createdAt]);
+					output.push([comment.username,comment.userId+"_"+comment.stationId,comment.type,comment.body,comment.createdAt]);
 				})
 				downloadCSV(output,"mesonet_comments.csv",'#export_comments');
 			}
