@@ -213,7 +213,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		sailsSocket.put(
 			'/user/'+$scope.user.id,$scope.user,
 			function(response){
-				console.log('save changes',$scope.user.stations);
+				//console.log('save changes',$scope.user.stations);
 				sailsSocket.get('/user/'+$scope.user.id,function(response){
 					$scope.user.stations = response.stations;
 					$scope.getUserStations();	
