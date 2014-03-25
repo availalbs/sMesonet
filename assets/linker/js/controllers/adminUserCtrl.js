@@ -32,7 +32,7 @@ app.controller('adminUserCtrl', function TodoCtrl($scope, $modal, sailsSocket, $
   $scope.logout = function () {
     sailsSocket.post('/logout', {},
       function(response) {
-        window.location = '/mesonet';
+        window.location = '/';
       });
   };
 
