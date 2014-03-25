@@ -42,7 +42,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
-						console.log('getUserStations',$scope.user.stations);
+						//console.log('getUserStations',$scope.user.stations);
 						if($scope.user.stations){
 							if($scope.user.stations.length > 0){
 								$scope.user.stations.forEach(function(station){
@@ -138,7 +138,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.user.stations = [];
 			};
 			$scope.user.stations.push($scope.stations[$scope.stations.length-1]);
-			console.log('add station',$scope.user.stations);
+			//console.log('add station',$scope.user.stations);
 			$scope.markers.push(marker);
 			
 			var newScope = $scope.$new();
@@ -155,7 +155,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 			marker.on('click',function(event){
 				if(!$scope.stations[$scope.stations.length-1].elevation){
-					getElevation($scope.stations[$scope.stations.length-1].lat, $scope.stations[$scope.stations.length-1].lng,i);
+					getElevation($scope.stations[$scope.stations.length-1].lat, $scope.stations[$scope.stations.length-1].lng,$scope.stations.length-1);
 				}
 				sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id,"stationId":$scope.stations[$scope.stations.length-1].id}},
 					function(response){
@@ -189,7 +189,9 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 	$scope.saveChanges = function(){
 		if($scope.user.accessLevel == 1){
-			$scope.mesoMap.mapData = angular.copy($scope.stations);
+			var splice_location = $scope.stations.length-$scope.user.stations.length;
+			$scope.stations.splice(splice_location,$scope.user.stations.length);
+			$scope.mesoMap.mapData = $scope.stations;
 			$scope.mesoMap.mapData.forEach(function(d){
 				d.marker = [];
 				delete d.comments;
