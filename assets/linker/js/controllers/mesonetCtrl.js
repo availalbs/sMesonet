@@ -42,7 +42,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
-						//console.log('getUserStations',$scope.user.stations);
+						console.log('getUserStations',$scope.user.stations);
 						if($scope.user.stations){
 							if($scope.user.stations.length > 0){
 								$scope.user.stations.forEach(function(station){
@@ -120,8 +120,10 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	mesonet.map.on('click',function(e){
 		if($scope.addMarker){
 			
-			var new_station = $scope.stations[$scope.stations.length-1];
-			new_station.id += 1;
+			var old_station =  $scope.stations[$scope.stations.length-1];
+			var new_station = {};
+			new_station.id = old_station.id + 1;
+			new_station.currentIndex = old_station.currentIndex+1;
 			new_station.name = "Station "+new_station.id;
 			new_station.lat = e.latlng.lat;
 			new_station.lng = e.latlng.lng;
@@ -133,12 +135,13 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			mesonet.map.addLayer(marker);
 			new_station.marker = marker;
 			$scope.stations.push(new_station);
-
+			//console.log('add station, last station',new_station)
 			if(!$scope.user.stations){
 				$scope.user.stations = [];
 			};
-			$scope.user.stations.push($scope.stations[$scope.stations.length-1]);
-			//console.log('add station',$scope.user.stations);
+			//console.log('add station before push',$scope.user.stations);	
+			$scope.user.stations.push(new_station);
+			//console.log('add station after push',$scope.user.stations);	
 			$scope.markers.push(marker);
 			
 			var newScope = $scope.$new();
@@ -189,8 +192,16 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 
 	$scope.saveChanges = function(){
 		if($scope.user.accessLevel == 1){
-			var splice_location = $scope.stations.length-$scope.user.stations.length;
-			$scope.stations.splice(splice_location,$scope.user.stations.length);
+			console.log($scope.stations);
+			var removeUs = [];
+			$scope.stations.forEach(function(station,index){
+				if(station.type == 'user'){
+					console.log(index);
+					removeUs.push(station);
+				}
+			})
+			console.log($scope.stations.length-removeUs.length,removeUs.length);
+			$scope.stations.splice($scope.stations.length-removeUs.length,removeUs.length);
 			$scope.mesoMap.mapData = $scope.stations;
 			$scope.mesoMap.mapData.forEach(function(d){
 				d.marker = [];
@@ -213,7 +224,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		sailsSocket.put(
 			'/user/'+$scope.user.id,$scope.user,
 			function(response){
-				//console.log('save changes',$scope.user.stations);
+				console.log('save changes',$scope.user.stations);
 				sailsSocket.get('/user/'+$scope.user.id,function(response){
 					$scope.user.stations = response.stations;
 					$scope.getUserStations();	
@@ -285,12 +296,18 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				delete_index = i;
 			}
 		});
-	
-		if($scope.stations[delete_index].type == 'user'){
-    	if($scope.stations[delete_index].comments && $scope.stations[delete_index].comments instanceof Array ){
-    		$scope.stations[delete_index].comments.forEach(function(comment){
+		mesonet.map.removeLayer($scope.stations[delete_index].marker);
+		$scope.markers.splice(delete_index,1);
+		var deleted_station = $scope.stations.splice(delete_index,1)[0];
+
+		console.log(deleted_station.type);
+		if(deleted_station.type == 'user'){
+    	console.log('is user');
+    	if(deleted_station.comments && deleted_station.comments instanceof Array ){
+    		deleted_station.comments.forEach(function(comment){
+    			console.log('comment');
     			sailsSocket.delete('/comment/'+comment.id,function(response){
-    				//console.log('deleted comment'+comment.id,response);
+    				console.log('deleted comment'+comment.id,response);
     			})
     		})
     	}
@@ -300,6 +317,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 					user_delete_index = i;
 				}
 			});
+			console.log('user delete index');
 			$scope.user.stations.splice(user_delete_index,1);
 			$scope.user.stations.forEach(function(d){
 				d.marker = [];
@@ -309,15 +327,12 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			$timeout(function(){
        $scope.getUserStations();
     	},3000);
-			
-				
-    }
-    mesonet.map.removeLayer($scope.stations[delete_index].marker);
-		$scope.stations.splice(delete_index,1);
-		$scope.markers.splice(delete_index,1);
+		}		
 		$scope.bindMarkers($scope.editable);
 		$scope.saveChanged = 'Deleted Station '+value;
-		
+		$timeout(function(){
+       $scope.saveChanged = '';
+    },3000);
 
 	
 	});
