@@ -17,6 +17,9 @@ var mesonet = {
 	asos:{},
 	asos_stations:{},
 	asos_g:{},
+	wind:{},
+	wind_stations:{},
+	wind_g:{},
 	markers: [],
 	icon_size : 20,
 	stations: [],
@@ -31,8 +34,11 @@ var mesonet = {
 		//if(mesonet.datasource !== '' ){ loader.push(mesonet.loadData); }
 		loader.push(mesonet.initMap);
 		loader.push(mesonet.loadASOS);
+		loader.push(mesonet.loadwind);
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawASOS);
+		loader.push(mesonet.drawwind);
+
 		loader.run();
 		toggles.init();
 		popup.init();
@@ -53,6 +59,36 @@ var mesonet = {
 	loadASOS :function(){
 		mesonet.asos = 
 [{'station_name':'KALB','elevation':89,'latitude':42.75,'longitude':-73.8},{'station_name':'KART','elevation':99,'latitude':44,'longitude':-76.02},{'station_name':'KBGM','elevation':497,'latitude':42.22,'longitude':-75.98},{'station_name':'KBUF','elevation':215,'latitude':42.93,'longitude':-78.73},{'station_name':'KDKK','elevation':211,'latitude':42.5,'longitude':-79.28},{'station_name':'KDSV','elevation':209,'latitude':42.58,'longitude':-77.72},{'station_name':'KELM','elevation':291,'latitude':42.17,'longitude':-76.9},{'station_name':'KELZ','elevation':647,'latitude':42.12,'longitude':-77.98},{'station_name':'KFOK','elevation':20,'latitude':40.85,'longitude':-72.63},{'station_name':'KFRG','elevation':25,'latitude':40.73,'longitude':-73.42},{'station_name':'KFZY','elevation':138,'latitude':43.3,'longitude':-76.39},{'station_name':'KGFL','elevation':100,'latitude':43.33,'longitude':-73.62},{'station_name':'KHPN','elevation':134,'latitude':41.07,'longitude':-73.7},{'station_name':'KHWV','elevation':25,'latitude':40.83,'longitude':-72.87},{'station_name':'KIAG','elevation':180,'latitude':43.1,'longitude':-78.95},{'station_name':'KISP','elevation':30,'latitude':40.8,'longitude':-73.1},{'station_name':'KJFK','elevation':7,'latitude':40.65,'longitude':-73.78},{'station_name':'KLGA','elevation':3,'latitude':40.78,'longitude':-73.88},{'station_name':'KMGJ','elevation':111,'latitude':41.51,'longitude':-74.27},{'station_name':'KMSS','elevation':65,'latitude':44.93,'longitude':-74.85},{'station_name':'KNYC','elevation':33,'latitude':40.78,'longitude':-73.97},{'station_name':'KPBG','elevation':72,'latitude':44.65,'longitude':-73.47},{'station_name':'KPEO','elevation':275,'latitude':42.65,'longitude':-77.05},{'station_name':'KPOU','elevation':51,'latitude':41.63,'longitude':-73.88},{'station_name':'KRME','elevation':154,'latitude':43.23,'longitude':-75.4},{'station_name':'KROC','elevation':169,'latitude':43.12,'longitude':-77.67},{'station_name':'KSLK','elevation':507,'latitude':44.38,'longitude':-74.2},{'station_name':'KSYR','elevation':124,'latitude':43.12,'longitude':-76.12}];
+		loader.run();
+	},
+	loadwind :function(){
+		mesonet.wind = 
+				[{'station_name':'Dutch Hill/Cohocton Wind Farm','elevation':0,'latitude':42.5081,'longitude':-77.4628}
+				,{'station_name':'Fenner Wind Power Project','elevation':0,'latitude':42.9883,'longitude':-75.7551}
+				,{'station_name':'Fenner Wind Power Project','elevation':0,'latitude':42.9715,'longitude':-75.7599}
+				,{'station_name':'Half Hollow Nursery','elevation':0,'latitude':40.969,'longitude':-72.5709}
+				,{'station_name':'Harbec Plastics','elevation':0,'latitude':43.2267,'longitude':-77.3602}
+				,{'station_name':'Harbeck Plastic wind turbine','elevation':0,'latitude':43.2261,'longitude':-77.3618}
+				,{'station_name':'Hardscrabble','elevation':0,'latitude':43.1423,'longitude':-74.8866}
+				,{'station_name':'High Sheldon Energy','elevation':0,'latitude':42.7416,'longitude':-78.3838}
+				,{'station_name':'Howard','elevation':0,'latitude':42.3122,'longitude':-77.5359}
+				,{'station_name':'Madison Wind Power Project','elevation':0,'latitude':42.8949,'longitude':-75.4525}
+				,{'station_name':'Maple Ridge Wind Farm','elevation':0,'latitude':43.7663,'longitude':-75.5914}
+				,{'station_name':'Maple Ridge Wind Farm, phase II','elevation':0,'latitude':0,'longitude':0}
+				,{'station_name':'Marble River','elevation':0,'latitude':44.9335,'longitude':-73.9001}
+				,{'station_name':'Munnsville','elevation':0,'latitude':42.9258,'longitude':-75.5557}
+				,{'station_name':'Noble Altona Windpark','elevation':0,'latitude':44.8226,'longitude':-73.6534}
+				,{'station_name':'Noble Bellmont','elevation':0,'latitude':44.8657,'longitude':-74.0212}
+				,{'station_name':'Noble Bliss Windpark','elevation':0,'latitude':42.5489,'longitude':-78.2612}
+				,{'station_name':'Noble Chateaugay','elevation':0,'latitude':44.9003,'longitude':-74.0396}
+				,{'station_name':'Noble Clinton Windpark','elevation':0,'latitude':44.9222,'longitude':-73.9903}
+				,{'station_name':'Noble Ellenburg Windpark','elevation':0,'latitude':44.872,'longitude':-73.9651}
+				,{'station_name':'Noble Wethersfield','elevation':0,'latitude':42.6304,'longitude':-78.2606}
+				,{'station_name':'Orangeville Wind','elevation':0,'latitude':42.7450665,'longitude':-78.2431525}
+				,{'station_name':'Steel Winds II','elevation':0,'latitude':42.8135,'longitude':-78.8641}
+				,{'station_name':'Steel Winds Wind Farm','elevation':0,'latitude':42.8181,'longitude':-78.8676}
+				,{'station_name':'Wethersfield Wind Power','elevation':0,'latitude':42.683,'longitude':-78.2451}
+				,{'station_name':'Zotos','elevation':0,'latitude':42.8867,'longitude':-76.968}];
 		loader.run();
 	},
 	loadData : function() {
@@ -192,6 +228,42 @@ var mesonet = {
 				
 		//console.log(mesonet.asos_stations);
 		mesonet.map.on("viewreset", mesonet.reset);
+		//mesonet.reset();
+		loader.run();
+	},
+	drawwind : function(){
+		mesonet.wind_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide wind_stations");
+		mesonet.wind_stations = mesonet.wind_g.selectAll("circle.wind")
+			.data(mesonet.wind)
+				.enter()
+				.append("circle")
+				.classed("wind", true)
+				.attr({
+					r: 4,
+					cx: function(d,i) {
+						return mesonet.project([d.longitude*1,d.latitude*1])[0];
+					},
+					cy: function(d,i) {
+						return mesonet.project([d.longitude*1,d.latitude*1])[1];
+					},
+					"fill": "#551a8b",
+					"station_name": function(d,i) {
+						return d.station_name;
+					},
+
+				})
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>Wind Station<br></strong>" + self.attr("station_name") + "</p>";
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+				
+		//	console.log(mesonet.wind_stations);
+		mesonet.map.on("viewreset", mesonet.reset);
 		mesonet.reset();
 		loader.run();
 	},
@@ -233,8 +305,7 @@ var mesonet = {
 			.style("margin-top", topRight[1] + "px");
 		mesonet.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-
-
+		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 
 		mesonet.counties.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
@@ -246,7 +317,14 @@ var mesonet = {
 				return mesonet.project([d.longitude*1,d.latitude*1])[1];
 			});
 
-	},
+		mesonet.wind_stations
+			.attr("cx", function(d) {
+				return mesonet.project([d.longitude*1,d.latitude*1])[0];
+			})
+			.attr("cy", function(d) {
+				return mesonet.project([d.longitude*1,d.latitude*1])[1];
+			});
+	}, 
 	project : function(x) {
 		var point = mesonet.map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
 		return [point.x, point.y];
