@@ -71,6 +71,12 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.asos(cx='10', cy='10', r='7', fill='#ff0')
               span ASOS Station
+        #wind_stations_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.wind(cx='10', cy='10', r='7', fill='#551a8b')
+              span Wind Farm
         #floodplain_layer_legend
           ul
             li
@@ -123,6 +129,8 @@ html(ng-app="app")
               a(style='height:35px')#leaflet-marker-pane.active Proposed Mesonet Stations
             li
               a(style='height:35px')#asos_stations.active ASOS Stations
+            li
+              a(style='height:35px')#wind_stations.active Wind Farms
             li
               a(style='height:35px')#county. County Population
             li
