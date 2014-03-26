@@ -254,7 +254,7 @@ var mesonet = {
 				})
 				.on("mouseover", function(self) {
 					self = $(this);
-					var text = "<p><strong>Wind Station<br></strong>" + self.attr("station_name") + "</p>";
+					var text = "<p><strong>Wind Farm<br></strong>" + self.attr("station_name") + "</p>";
 					$("#info").show().html(text);
 				})
 				.on("mouseout", function(self) {
