@@ -28,6 +28,13 @@ var mesonet = {
 	pIcon:L.icon({iconUrl: '/linker/js/images/anemometer_g1_3.png',iconSize: [24, 24],iconAnchor: [ 24/2,0]}),
 	ny_counties:ny_county_geo,
 	counties:{layer:{},brewer:['YlGn','YlGnBu','GnBu','BuGn','PuBuGn','PuBu','BuPu','RdPu','PuRd','OrRd','YlOrRd','YlOrBr','Purples','Blues','Greens','Oranges','Reds','Greys','PuOr','BrBG','PRGn','PiYG','RdBu','RdGy','RdYlBu','Spectral','RdYlGn','Accent','Dark2','Paired','Pastel1','Pastel2','Set1','Set2','Set3'],ll:7},
+	huc10:huc10_geo,
+	huc10_shape:[],
+	huc10_g:{},
+	huc8:huc8_geo,
+	huc8_shape:[],
+	huc8_g:{},
+
 	init : function(container) {
 		if(typeof container != 'undefined'){ mesonet.container = container; }
 		loader.push(mesonet.loadNYS);
@@ -36,8 +43,11 @@ var mesonet = {
 		loader.push(mesonet.loadASOS);
 		loader.push(mesonet.loadwind);
 		loader.push(mesonet.drawCounties);
+		loader.push(mesonet.drawHuc10);
+		loader.push(mesonet.drawHuc8);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
+
 
 		loader.run();
 		toggles.init();
@@ -163,6 +173,66 @@ var mesonet = {
 				mesonet.setLegend();
 			loader.run();
 	},
+
+	drawHuc10:function(){
+
+			mesonet.huc10_shape.color = "#3399FF"
+			mesonet.huc10_shape.layer = mesonet.huc10_g.selectAll("path.huc10_shape")
+				.data(topojson.feature(mesonet.huc10, mesonet.huc10.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "huc10")
+				.attr("huc10_code",function(d){ return d.properties['HUC10'];})
+				.attr("huc10_type",function(d){ return d.properties['HUType'];})
+				.attr("h_name",function(d){ return d.properties['Name'];})
+				.style("fill","#3399FF")
+	 			.style("opacity", 0.3)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("h_name") +"</strong><br>HUC10: "+self.attr("huc10_code")+"</strong><br>HUType: "+ self.attr("huc10_type")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawHuc8:function(){
+
+			mesonet.huc8_shape.color = "99FFCC"
+			mesonet.huc8_shape.layer = mesonet.huc8_g.selectAll("path.huc8_shape")
+				.data(topojson.feature(mesonet.huc8, mesonet.huc8.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "huc8")
+				.attr("huc8_code",function(d){ return d.properties['HUC8'];})
+				.attr("h_name",function(d){ return d.properties['Name'];})
+				.style("fill","99FFCC")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("h_name") +"</strong><br>HUC8: "+self.attr("huc8_code")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
 	setLegend : function(){
 		var legendText = '<hr><h3>County Population</h3><ul id="tangle-legend">';
 		var prev = 0;
@@ -291,6 +361,8 @@ var mesonet = {
 			
 		mesonet.svg = d3.select(mesonet.map.getPanes().overlayPane).append("svg");
 		mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");
+		mesonet.huc10_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc10");
+		mesonet.huc8_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc8");
 		mesonet.path = d3.geo.path().projection(mesonet.project);
 		loader.run();
 	},
@@ -304,10 +376,14 @@ var mesonet = {
 			.style("margin-left", bottomLeft[0] + "px")
 			.style("margin-top", topRight[1] + "px");
 		mesonet.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.huc10_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.huc8_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 
 		mesonet.counties.layer.attr("d", mesonet.path);
+		mesonet.huc10_shape.layer.attr("d", mesonet.path);
+		mesonet.huc8_shape.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
 		mesonet.asos_stations
 			.attr("cx", function(d) {
