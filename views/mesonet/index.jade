@@ -21,6 +21,7 @@ html(ng-app="app")
     script(type='text/javascript', src='/linker/js/leaflet.js')
     script(type='text/javascript', src='/linker/js/queue.v1.min.js')
     script(type='text/javascript', src='/linker/js/colorbrewer.js')
+    script(type='text/javascript', src="http://d3js.org/topojson.v1.min.js")
     script(type='text/javascript', src='/linker/js/src/mesonet.js')
     script(type='text/javascript', src='/linker/js/src/mesoStations.js')
     script(type='text/javascript', src='/linker/js/src/behavior.js')
@@ -133,6 +134,10 @@ html(ng-app="app")
               a(style='height:35px')#wind_stations.active Wind Farms
             li
               a(style='height:35px')#county. County Population
+            li
+              a(style='height:35px')#huc8. Subbasins (HUC8) 
+            li
+              a(style='height:35px')#huc10. Watersheds (HUC10) 
             li
               a(style='height:35px')#rainfall_layer. Average Annual Rainfall
             li
