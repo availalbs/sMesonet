@@ -206,7 +206,7 @@ var mesonet = {
 
 	drawHuc8:function(){
 
-			mesonet.huc8_shape.color = "99FFCC"
+			mesonet.huc8_shape.color = "#FF6600"
 			mesonet.huc8_shape.layer = mesonet.huc8_g.selectAll("path.huc8_shape")
 				.data(topojson.feature(mesonet.huc8, mesonet.huc8.objects.layer1).features)
 				.enter()
@@ -215,7 +215,7 @@ var mesonet = {
 				.attr("class", "huc8")
 				.attr("huc8_code",function(d){ return d.properties['HUC8'];})
 				.attr("h_name",function(d){ return d.properties['Name'];})
-				.style("fill","99FFCC")
+				.style("fill","#FF6600")
 	 			.style("opacity", 0.4)
 				.style("stroke",'#333')
 				.on("mouseover", function(self) {
