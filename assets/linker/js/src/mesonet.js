@@ -20,6 +20,9 @@ var mesonet = {
 	wind:{},
 	wind_stations:{},
 	wind_g:{},
+	water:{},
+	water_stations:{},
+	water_g:{},
 	markers: [],
 	icon_size : 20,
 	stations: [],
@@ -42,12 +45,13 @@ var mesonet = {
 		loader.push(mesonet.initMap);
 		loader.push(mesonet.loadASOS);
 		loader.push(mesonet.loadwind);
+		loader.push(mesonet.loadwater);
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
-
+		loader.push(mesonet.drawwater);
 
 		loader.run();
 		toggles.init();
@@ -99,6 +103,28 @@ var mesonet = {
 				,{'station_name':'Steel Winds Wind Farm','elevation':0,'latitude':42.8181,'longitude':-78.8676}
 				,{'station_name':'Wethersfield Wind Power','elevation':0,'latitude':42.683,'longitude':-78.2451}
 				,{'station_name':'Zotos','elevation':0,'latitude':42.8867,'longitude':-76.968}];
+		loader.run();
+	},
+	loadwater :function(){
+		mesonet.water = 
+				[{'station_name':'Lock C-6','elevation':0,'latitude':43.15975,'longitude':-73.579639}
+				,{'station_name':'Lock E-10','elevation':0,'latitude':42.917389,'longitude':-74.141361}
+				,{'station_name':'Lock E-14','elevation':0,'latitude':42.909278,'longitude':-74.578444}
+				,{'station_name':'Lock E-16','elevation':0,'latitude':42.992361,'longitude':-74.707806}
+				,{'station_name':'Lock E-19','elevation':0,'latitude':43.074278,'longitude':-75.114167}
+				,{'station_name':'Lock E-20','elevation':0,'latitude':43.142306,'longitude':-75.290167}
+				,{'station_name':'Delta Reservoir, Western','elevation':0,'latitude':43.274722,'longitude':-75.427861}
+				,{'station_name':'Trenton Falls Diversion','elevation':0,'latitude':43.272222,'longitude':-75.159056}
+				,{'station_name':'Forestport Feeder Canal','elevation':0,'latitude':43.442139,'longitude':-75.2145}
+				,{'station_name':'South Lake Reservoir, Ohio','elevation':0,'latitude':43.509639,'longitude':-74.876083}
+				,{'station_name':'Leland Pond Reservoir, Eaton','elevation':0,'latitude':42.871278,'longitude':-75.573}
+				,{'station_name':'Oneida Lake, Brewerton','elevation':0,'latitude':43.239972,'longitude':-76.141}
+				,{'station_name':'Lock E-25','elevation':0,'latitude':42.999056,'longitude':-76.762917}
+				,{'station_name':'Lock E-27','elevation':0,'latitude':43.062333,'longitude':-76.996889}
+				,{'station_name':'Cazenovia Lake Reservoir,','elevation':0,'latitude':42.927528,'longitude':-75.856306}
+				,{'station_name':'Erieville Reservoir, Nelson','elevation':0,'latitude':42.86725,'longitude':-75.760722}
+				,{'station_name':'DeRuyter Reservoir','elevation':0,'latitude':42.827028,'longitude':-75.900083}
+				,{'station_name':'Jamesville Reservoir, LaFayette','elevation':0,'latitude':42.982528,'longitude':-76.0695}];
 		loader.run();
 	},
 	loadData : function() {
@@ -334,6 +360,43 @@ var mesonet = {
 				
 		//	console.log(mesonet.wind_stations);
 		mesonet.map.on("viewreset", mesonet.reset);
+		//mesonet.reset();
+		loader.run();
+	},
+
+	drawwater : function(){
+		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide wind_stations");
+		mesonet.water_stations = mesonet.water_g.selectAll("circle.water")
+			.data(mesonet.water)
+				.enter()
+				.append("circle")
+				.classed("water", true)
+				.attr({
+					r: 4,
+					cx: function(d,i) {
+						return mesonet.project([d.longitude*1,d.latitude*1])[0];
+					},
+					cy: function(d,i) {
+						return mesonet.project([d.longitude*1,d.latitude*1])[1];
+					},
+					"fill": "#FF9500",
+					"station_name": function(d,i) {
+						return d.station_name;
+					},
+
+				})
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>Water Level Station<br></strong>" + self.attr("station_name") + "</p>";
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+				
+		//	console.log(mesonet.wind_stations);
+		mesonet.map.on("viewreset", mesonet.reset);
 		mesonet.reset();
 		loader.run();
 	},
@@ -380,7 +443,7 @@ var mesonet = {
 		mesonet.huc8_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-
+		mesonet.water_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
@@ -394,6 +457,13 @@ var mesonet = {
 			});
 
 		mesonet.wind_stations
+			.attr("cx", function(d) {
+				return mesonet.project([d.longitude*1,d.latitude*1])[0];
+			})
+			.attr("cy", function(d) {
+				return mesonet.project([d.longitude*1,d.latitude*1])[1];
+			});
+		mesonet.water_stations
 			.attr("cx", function(d) {
 				return mesonet.project([d.longitude*1,d.latitude*1])[0];
 			})
