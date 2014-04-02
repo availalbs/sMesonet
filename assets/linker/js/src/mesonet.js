@@ -365,7 +365,7 @@ var mesonet = {
 	},
 
 	drawwater : function(){
-		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide wind_stations");
+		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
 		mesonet.water_stations = mesonet.water_g.selectAll("circle.water")
 			.data(mesonet.water)
 				.enter()
