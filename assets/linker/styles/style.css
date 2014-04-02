@@ -309,7 +309,7 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 	background-color:#fff;padding:5px;margin:5px;border-radius:5px;
 }
 .whitebox2{
-	background-color:#fff;padding:5px;margin:5px;border-radius:5px;height:400px;overflow:scroll;
+	background-color:#fff;padding:5px;margin:5px;border-radius:5px;height:400px;overflow-y:scroll;
 }
 .greybox{
 	padding:5px;margin:5px;border-radius:5px;
