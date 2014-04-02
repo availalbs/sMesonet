@@ -281,8 +281,35 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 	cursor:pointer;
 
 }
+.college:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+
+}
+.wind:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+
+}
+.water:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+
+}
+.libraries:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+
+}
 .whitebox{
 	background-color:#fff;padding:5px;margin:5px;border-radius:5px;
+}
+.whitebox2{
+	background-color:#fff;padding:5px;margin:5px;border-radius:5px;height:400px;overflow:scroll;
 }
 .greybox{
 	padding:5px;margin:5px;border-radius:5px;

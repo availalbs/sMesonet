@@ -37,6 +37,12 @@ var mesonet = {
 	huc8:huc8_geo,
 	huc8_shape:[],
 	huc8_g:{},
+	college_g:{},
+	college:college_geo,
+	college_shape:[],
+	libraries_g:{},
+	libraries:libraries_geo,
+	libraries_shape:[],
 
 	init : function(container) {
 		if(typeof container != 'undefined'){ mesonet.container = container; }
@@ -49,6 +55,8 @@ var mesonet = {
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
+		loader.push(mesonet.drawcollege);
+		loader.push(mesonet.drawlibraries);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
@@ -259,6 +267,58 @@ var mesonet = {
 			loader.run();
 	},
 
+drawcollege:function(){
+
+			mesonet.college_shape.color = "#0027FF"
+			mesonet.college_shape.layer = mesonet.college_g.selectAll("path.college_shape")
+				.data(mesonet.college.features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "college")
+				.attr("suny_name",function(d){ return d.properties['LNAME'];})
+				.style("fill","#0027FF")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("suny_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+	drawlibraries:function(){
+
+			mesonet.libraries_shape.color = "#77FFC6"
+			mesonet.libraries_shape.layer = mesonet.libraries_g.selectAll("circle.libraries")
+				.data(topojson.feature(mesonet.libraries, mesonet.libraries.objects.libraries2).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "libraries")
+				.attr("lib_name",function(d){ return d.properties['NAME'];})
+				.style("fill","#77FFC6")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("lib_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+
 	setLegend : function(){
 		var legendText = '<hr><h3>County Population</h3><ul id="tangle-legend">';
 		var prev = 0;
@@ -366,6 +426,7 @@ var mesonet = {
 
 	drawwater : function(){
 		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+
 		mesonet.water_stations = mesonet.water_g.selectAll("circle.water")
 			.data(mesonet.water)
 				.enter()
@@ -426,6 +487,8 @@ var mesonet = {
 		mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");
 		mesonet.huc10_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc10");
 		mesonet.huc8_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc8");
+		mesonet.college_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+		mesonet.libraries_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
 		mesonet.path = d3.geo.path().projection(mesonet.project);
 		loader.run();
 	},
@@ -441,12 +504,16 @@ var mesonet = {
 		mesonet.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.huc10_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.huc8_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.college_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.libraries_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.water_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
+		mesonet.college_shape.layer.attr("d", mesonet.path);
+		mesonet.libraries_shape.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
 		mesonet.asos_stations
 			.attr("cx", function(d) {
@@ -463,6 +530,7 @@ var mesonet = {
 			.attr("cy", function(d) {
 				return mesonet.project([d.longitude*1,d.latitude*1])[1];
 			});
+
 		mesonet.water_stations
 			.attr("cx", function(d) {
 				return mesonet.project([d.longitude*1,d.latitude*1])[0];
