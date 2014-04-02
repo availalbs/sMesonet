@@ -78,6 +78,12 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.wind(cx='10', cy='10', r='7', fill='#551a8b')
               span Wind Farm
+        #water_stations_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.wind(cx='10', cy='10', r='7', fill='#FF9500')
+              span Water Level Station
         #floodplain_layer_legend
           ul
             li
@@ -131,7 +137,9 @@ html(ng-app="app")
             li
               a(style='height:35px')#asos_stations.active ASOS Stations
             li
-              a(style='height:35px')#wind_stations.active Wind Farms
+              a(style='height:35px')#wind_stations. Wind Farms
+            li
+              a(style='height:35px')#water. TEMP - June/Water Level
             li
               a(style='height:35px')#county. County Population
             li

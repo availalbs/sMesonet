@@ -10,6 +10,8 @@ $(function(){
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
 	$('.huc8').hide();
+	$('.water').hide();
+	$('.wind_stations').hide();
 	
 	//var map = {"200":2645,"199":2648,"198":,}
 
