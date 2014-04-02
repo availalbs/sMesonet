@@ -7,11 +7,17 @@ $(function(){
 	$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('floodplain_layer').hide();
 	$('.county').hide();
 	$('#county_legend').hide();
+	$('#college_legend').hide();
+	$('#water_legend').hide();
+	$('#wind_stations_legend').hide();
+	$('#libraries_legend').hide();
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
 	$('.huc8').hide();
+	$('.college').hide();
 	$('.water').hide();
 	$('.wind_stations').hide();
+	$('.libraries').hide();
 	
 	//var map = {"200":2645,"199":2648,"198":,}
 

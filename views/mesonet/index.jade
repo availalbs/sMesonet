@@ -65,13 +65,24 @@ html(ng-app="app")
               img(src='/linker/js/images/imp_forecasting.png' style="width:20px;height:20px")  
               span User Added site
             
-
         #asos_stations_legend
           ul
             li
               svg(width='20', height='20')
                 circle.asos(cx='10', cy='10', r='7', fill='#ff0')
               span ASOS Station
+        #college_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.college(cx='10', cy='10', r='7', fill='#0027FF')
+              span SUNY/CUNY Colleges
+        #libraries_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.libraries(cx='10', cy='10', r='7', fill='#77FFC6')
+              span Public Libraries
         #wind_stations_legend
           ul
             li
@@ -82,7 +93,7 @@ html(ng-app="app")
           ul
             li
               svg(width='20', height='20')
-                circle.wind(cx='10', cy='10', r='7', fill='#FF9500')
+                circle.water(cx='10', cy='10', r='7', fill='#FF9500')
               span Water Level Station
         #floodplain_layer_legend
           ul
@@ -90,8 +101,8 @@ html(ng-app="app")
               svg(width='20', height='20')
                 rect(width='15', height='15', fill='#000')
               span Flood Hazard Zone
-        #county_legend
-        #rainfall_layer_legend
+          #county_legend
+          #rainfall_layer_legend
     #container(ng-controller="SailsSocketCtrl")
       h1 MESONET Site Selection Tool
       #content
@@ -130,7 +141,7 @@ html(ng-app="app")
             br
 
         strong Map Layers
-        .whitebox.col-sm-12
+        .whitebox2
           ul#economic(style='list-style: none;')
             li
               a(style='height:35px')#leaflet-marker-pane.active Proposed Mesonet Stations
@@ -140,6 +151,10 @@ html(ng-app="app")
               a(style='height:35px')#wind_stations. Wind Farms
             li
               a(style='height:35px')#water. TEMP - June/Water Level
+            li
+              a(style='height:35px')#college. SUNY/CUNY Colleges
+            li
+              a(style='height:35px')#libraries. Public Libraries
             li
               a(style='height:35px')#county. County Population
             li
