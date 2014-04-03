@@ -83,13 +83,19 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.libraries(cx='10', cy='10', r='7', fill='#77FFC6')
               span Public Libraries
+        #schools_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.schools(cx='10', cy='10', r='7', fill='#00FF0E')
+              span Public Schools
         #wind_stations_legend
           ul
             li
               svg(width='20', height='20')
                 circle.wind(cx='10', cy='10', r='7', fill='#551a8b')
               span Wind Farm
-        #water_stations_legend
+        #water_legend
           ul
             li
               svg(width='20', height='20')
@@ -141,7 +147,7 @@ html(ng-app="app")
             br
 
         strong Map Layers
-        .whitebox2
+        #layers_selector
           ul#economic(style='list-style: none;')
             li
               a(style='height:35px')#leaflet-marker-pane.active Proposed Mesonet Stations
@@ -150,11 +156,13 @@ html(ng-app="app")
             li
               a(style='height:35px')#wind_stations. Wind Farms
             li
-              a(style='height:35px')#water. TEMP - June/Water Level
+              a(style='height:35px')#water. Water Level
             li
               a(style='height:35px')#college. SUNY/CUNY Colleges
             li
               a(style='height:35px')#libraries. Public Libraries
+            li
+              a(style='height:35px')#schools. Public Schools
             li
               a(style='height:35px')#county. County Population
             li

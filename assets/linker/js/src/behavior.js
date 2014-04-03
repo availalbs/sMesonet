@@ -11,6 +11,7 @@ $(function(){
 	$('#water_legend').hide();
 	$('#wind_stations_legend').hide();
 	$('#libraries_legend').hide();
+	$('#schools_legend').hide();
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
 	$('.huc8').hide();
@@ -18,6 +19,7 @@ $(function(){
 	$('.water').hide();
 	$('.wind_stations').hide();
 	$('.libraries').hide();
+	$('.schools').hide();
 	
 	//var map = {"200":2645,"199":2648,"198":,}
 
