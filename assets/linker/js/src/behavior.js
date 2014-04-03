@@ -9,6 +9,8 @@ $(function(){
 	$('#county_legend').hide();
 	$('#college_legend').hide();
 	$('#water_legend').hide();
+	$('#cc_structure_legend').hide();
+	$('#cc_rainfall_legend').hide();
 	$('#wind_stations_legend').hide();
 	$('#libraries_legend').hide();
 	$('#schools_legend').hide();
@@ -17,6 +19,8 @@ $(function(){
 	$('.huc8').hide();
 	$('.college').hide();
 	$('.water').hide();
+	$('.cc_rainfall').hide();
+	$('.cc_structure').hide();
 	$('.wind_stations').hide();
 	$('.libraries').hide();
 	$('.schools').hide();
@@ -52,9 +56,13 @@ $(function(){
 	$('#economic li a').on('click',function(){
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
+			$(this).removeClass('active-secret');
 			$('.'+$(this).attr('id')).hide(500);
 			$('#'+$(this).attr('id')+'_legend').hide(500);
 		}else{
+			if($(this).hasClass('secret')){
+				$(this).addClass('active-secret');
+			}
 			$(this).addClass('active');
 			$('.'+$(this).attr('id')).show(500);
 			$('#'+$(this).attr('id')+'_legend').show(500);

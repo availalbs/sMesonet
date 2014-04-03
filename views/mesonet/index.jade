@@ -58,9 +58,6 @@ html(ng-app="app")
             li
               img(src='/linker/js/images/orange.png' style="width:20px;height:20px")
               span Mesonet Profiler
-            li
-              img(src='/linker/js/images/blue.png' style="width:20px;height:20px")
-              span Mesonet SUNY System
             li 
               img(src='/linker/js/images/imp_forecasting.png' style="width:20px;height:20px")  
               span User Added site
@@ -101,6 +98,18 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.water(cx='10', cy='10', r='7', fill='#FF9500')
               span Water Level Station
+        #cc_rainfall_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.cc_rainfall(cx='10', cy='10', r='7', fill='#FF00E3')
+              span Canal Precip Gauge
+        #cc_structure_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.cc_structure(cx='10', cy='10', r='7', fill='#000000')
+              span Canal Structures
         #floodplain_layer_legend
           ul
             li
@@ -156,38 +165,43 @@ html(ng-app="app")
             li
               a(style='height:35px')#wind_stations. Wind Farms
             li
-              a(style='height:35px')#water. Water Level
+              a(style='height:35px')#college SUNY/CUNY Colleges
             li
-              a(style='height:35px')#college. SUNY/CUNY Colleges
+              a(style='height:35px')#libraries Public Libraries
             li
-              a(style='height:35px')#libraries. Public Libraries
+              a(style='height:35px')#schools Public Schools
             li
-              a(style='height:35px')#schools. Public Schools
+              a(style='height:35px')#county County Population
             li
-              a(style='height:35px')#county. County Population
+              a(style='height:35px')#huc8 Subbasins (HUC8) 
             li
-              a(style='height:35px')#huc8. Subbasins (HUC8) 
+              a(style='height:35px')#huc10 Watersheds (HUC10) 
             li
-              a(style='height:35px')#huc10. Watersheds (HUC10) 
+              a(style='height:35px')#rainfall_layer Average Annual Rainfall
             li
-              a(style='height:35px')#rainfall_layer. Average Annual Rainfall
-            li
-              a(style='height:35px')#floodplain_layer. Flood Hazard Zone
+              a(style='height:35px')#floodplain_layer Flood Hazard Zone
+            li  
+             a(style='height:35px' ng-show="user.accessLevel == 1")#water.secret Water Level
+            li  
+             a(style='height:35px' ng-show="user.accessLevel == 1")#cc_rainfall.secret Canal Precip Gauges
+           
+          div(id='main-nav' style='display:none;') 
+            .user-info(ng-show="loggedIn") Logged in as 
+              strong {{user.username}}
+              span(style='font-size:12px;float:right;') {{saveChanged}}
+              .greybox(style='height: 60px;')
+                a.col-sm-12.btn.btn-info.btm-clear(style="margin-bottom:5px" ng-click="saveChanges()") Save Changes
+                a.col-sm-12.btn.btn-primary.btm-clear#add_station(style="margin-bottom:5px" ng-click="addStation()") Add Station
+                a.col-sm-6.btn.btn-primary.btm-clear#export_csv(ng-show="user.accessLevel == 1" style="margin-bottom:5px;" ng-click="exportStations()") Export CSV
+                a.col-sm-6.btn.btn-primary.btm-clear#export_comments(ng-show="user.accessLevel == 1" style="margin-bottom:5px;padding-left:5px;" ng-click="exportComments()") Export Comments
+                a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
+                a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
+            a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
+                //a.btn(ng-click="loadStops()" ) loadStops
+
         //strong Export Mesonet Sites
         
-        .whitebox.col-sm-12(id='main-nav' style='position:absolute;bottom:20px;right:12px;overflow:none;width:90%;display:none;') 
-          .user-info(ng-show="loggedIn") Logged in as 
-            strong {{user.username}}
-            span(style='font-size:12px;float:right;') {{saveChanged}}
-            .greybox(style='height: 60px;')
-              a.col-sm-12.btn.btn-info.btm-clear(style="margin-bottom:5px" ng-click="saveChanges()") Save Changes
-              a.col-sm-12.btn.btn-primary.btm-clear#add_station(style="margin-bottom:5px" ng-click="addStation()") Add Station
-              a.col-sm-6.btn.btn-primary.btm-clear#export_csv(ng-show="user.accessLevel == 1" style="margin-bottom:5px;" ng-click="exportStations()") Export CSV
-              a.col-sm-6.btn.btn-primary.btm-clear#export_comments(ng-show="user.accessLevel == 1" style="margin-bottom:5px;padding-left:5px;" ng-click="exportComments()") Export Comments
-              a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
-              a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
-          a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
-              //a.btn(ng-click="loadStops()" ) loadStops
+        
     #info
 
     script(type="text/ng-template", id="LoginModalContent.html")
