@@ -20,9 +20,6 @@ var mesonet = {
 	wind:{},
 	wind_stations:{},
 	wind_g:{},
-	water:{},
-	water_stations:{},
-	water_g:{},
 	markers: [],
 	icon_size : 20,
 	stations: [],
@@ -43,7 +40,20 @@ var mesonet = {
 	libraries_g:{},
 	libraries:libraries_geo,
 	libraries_shape:[],
-
+	schools_g:{},
+	schools:schools_geo,
+	schools_shape:[],
+	water:water_geo,
+	water_shape:[],
+	water_g:{},
+	cc_rainfall:cc_rainfall_geo,
+	cc_rainfall_shape:[],
+	cc_rainfall_g:{},
+	/*
+	cc_structure:cc_structure_geo,
+	cc_structure_shape:[],
+	cc_structure_g:{},
+*/
 	init : function(container) {
 		if(typeof container != 'undefined'){ mesonet.container = container; }
 		loader.push(mesonet.loadNYS);
@@ -51,15 +61,17 @@ var mesonet = {
 		loader.push(mesonet.initMap);
 		loader.push(mesonet.loadASOS);
 		loader.push(mesonet.loadwind);
-		loader.push(mesonet.loadwater);
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
+		loader.push(mesonet.drawschools);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
+		loader.push(mesonet.drawccrain);
+		//loader.push(mesonet.drawccstruct);
 
 		loader.run();
 		toggles.init();
@@ -113,28 +125,7 @@ var mesonet = {
 				,{'station_name':'Zotos','elevation':0,'latitude':42.8867,'longitude':-76.968}];
 		loader.run();
 	},
-	loadwater :function(){
-		mesonet.water = 
-				[{'station_name':'Lock C-6','elevation':0,'latitude':43.15975,'longitude':-73.579639}
-				,{'station_name':'Lock E-10','elevation':0,'latitude':42.917389,'longitude':-74.141361}
-				,{'station_name':'Lock E-14','elevation':0,'latitude':42.909278,'longitude':-74.578444}
-				,{'station_name':'Lock E-16','elevation':0,'latitude':42.992361,'longitude':-74.707806}
-				,{'station_name':'Lock E-19','elevation':0,'latitude':43.074278,'longitude':-75.114167}
-				,{'station_name':'Lock E-20','elevation':0,'latitude':43.142306,'longitude':-75.290167}
-				,{'station_name':'Delta Reservoir, Western','elevation':0,'latitude':43.274722,'longitude':-75.427861}
-				,{'station_name':'Trenton Falls Diversion','elevation':0,'latitude':43.272222,'longitude':-75.159056}
-				,{'station_name':'Forestport Feeder Canal','elevation':0,'latitude':43.442139,'longitude':-75.2145}
-				,{'station_name':'South Lake Reservoir, Ohio','elevation':0,'latitude':43.509639,'longitude':-74.876083}
-				,{'station_name':'Leland Pond Reservoir, Eaton','elevation':0,'latitude':42.871278,'longitude':-75.573}
-				,{'station_name':'Oneida Lake, Brewerton','elevation':0,'latitude':43.239972,'longitude':-76.141}
-				,{'station_name':'Lock E-25','elevation':0,'latitude':42.999056,'longitude':-76.762917}
-				,{'station_name':'Lock E-27','elevation':0,'latitude':43.062333,'longitude':-76.996889}
-				,{'station_name':'Cazenovia Lake Reservoir,','elevation':0,'latitude':42.927528,'longitude':-75.856306}
-				,{'station_name':'Erieville Reservoir, Nelson','elevation':0,'latitude':42.86725,'longitude':-75.760722}
-				,{'station_name':'DeRuyter Reservoir','elevation':0,'latitude':42.827028,'longitude':-75.900083}
-				,{'station_name':'Jamesville Reservoir, LaFayette','elevation':0,'latitude':42.982528,'longitude':-76.0695}];
-		loader.run();
-	},
+	
 	loadData : function() {
 		$.ajax({url:mesonet.datasource,
 				type : 'POST',
@@ -267,7 +258,7 @@ var mesonet = {
 			loader.run();
 	},
 
-drawcollege:function(){
+	drawcollege:function(){
 
 			mesonet.college_shape.color = "#0027FF"
 			mesonet.college_shape.layer = mesonet.college_g.selectAll("path.college_shape")
@@ -292,6 +283,7 @@ drawcollege:function(){
 				
 			loader.run();
 	},
+	
 	drawlibraries:function(){
 
 			mesonet.libraries_shape.color = "#77FFC6"
@@ -318,7 +310,107 @@ drawcollege:function(){
 			loader.run();
 	},
 
+	drawschools:function(){
 
+			mesonet.schools_shape.color = "#00FF0E"
+			mesonet.schools_shape.layer = mesonet.schools_g.selectAll("circle.schools")
+				.data(topojson.feature(mesonet.schools, mesonet.schools.objects.ny_schools).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "schools")
+				.attr("school_name",function(d){ return d.properties['NAME'];})
+				.style("fill","#00FF0E")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("school_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+	drawwater:function(){
+			mesonet.water_shape.color = "#FF9500"
+			mesonet.water_shape.layer = mesonet.water_g.selectAll("circle.water")
+				.data(topojson.feature(mesonet.water, mesonet.water.objects.water_level).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "water")
+				.attr("water_name",function(d){ return d.properties['GAGE'];})
+				.style("fill","#FF9500")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("water_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+			//mesonet.reset();	
+			loader.run();
+	},
+	drawccrain:function(){
+			mesonet.cc_rainfall_shape.color = "#FF00E3"
+			mesonet.cc_rainfall_shape.layer = mesonet.cc_rainfall_g.selectAll("circle.cc_rainfall")
+				.data(topojson.feature(mesonet.cc_rainfall, mesonet.cc_rainfall.objects.precip).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "cc_rainfall")
+				.attr("cc_rainfall_name",function(d){ return d.properties['Source'];})
+				.style("fill","#FF00E3")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("cc_rainfall_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+			//mesonet.reset();	
+			//console.log(mesonet.cc_rainfall.objects.precip);
+			loader.run();
+	},
+	/*
+	drawccstruct:function(){
+			mesonet.cc_structure_shape.color = "#000000"
+			mesonet.cc_structure_shape.layer = mesonet.cc_structure_g.selectAll("circle.cc_structure")
+				.data(topojson.feature(mesonet.cc_structure, mesonet.cc_structure.objects.new_canal).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "cc_structure")
+				.attr("cc_structure_name",function(d){ return d.properties['STRUCT_NAM'];})
+				.style("fill","#000000")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>Structure Name<br></strong>" + self.attr("cc_structure_name") + "</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+			//mesonet.reset();	
+			loader.run();
+			console.log(mesonet.cc_structure.objects.new_canal);
+	},
+*/
 	setLegend : function(){
 		var legendText = '<hr><h3>County Population</h3><ul id="tangle-legend">';
 		var prev = 0;
@@ -387,6 +479,7 @@ drawcollege:function(){
 		//mesonet.reset();
 		loader.run();
 	},
+
 	drawwind : function(){
 		mesonet.wind_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide wind_stations");
 		mesonet.wind_stations = mesonet.wind_g.selectAll("circle.wind")
@@ -420,47 +513,9 @@ drawcollege:function(){
 				
 		//	console.log(mesonet.wind_stations);
 		mesonet.map.on("viewreset", mesonet.reset);
-		//mesonet.reset();
 		loader.run();
 	},
 
-	drawwater : function(){
-		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-
-		mesonet.water_stations = mesonet.water_g.selectAll("circle.water")
-			.data(mesonet.water)
-				.enter()
-				.append("circle")
-				.classed("water", true)
-				.attr({
-					r: 4,
-					cx: function(d,i) {
-						return mesonet.project([d.longitude*1,d.latitude*1])[0];
-					},
-					cy: function(d,i) {
-						return mesonet.project([d.longitude*1,d.latitude*1])[1];
-					},
-					"fill": "#FF9500",
-					"station_name": function(d,i) {
-						return d.station_name;
-					},
-
-				})
-				.on("mouseover", function(self) {
-					self = $(this);
-					var text = "<p><strong>Water Level Station<br></strong>" + self.attr("station_name") + "</p>";
-					$("#info").show().html(text);
-				})
-				.on("mouseout", function(self) {
-					self = $(this);
-					$("#info").hide().html("");
-				});
-				
-		//	console.log(mesonet.wind_stations);
-		mesonet.map.on("viewreset", mesonet.reset);
-		mesonet.reset();
-		loader.run();
-	},
 	initMap : function(){
 		var satellite = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0pml9h7/{z}/{x}/{y}.png");
 		var terrain = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/am3081.h0pna3ah/{z}/{x}/{y}.png");
@@ -489,9 +544,15 @@ drawcollege:function(){
 		mesonet.huc8_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc8");
 		mesonet.college_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
 		mesonet.libraries_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+		mesonet.cc_rainfall_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+		mesonet.cc_structure_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
+		mesonet.schools_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
 		mesonet.path = d3.geo.path().projection(mesonet.project);
 		loader.run();
+		mesonet.reset();
 	},
+
 	reset : function() {
 			
 		var bottomLeft = mesonet.project(mesonet.bounds[0]),
@@ -506,14 +567,21 @@ drawcollege:function(){
 		mesonet.huc8_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.college_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.libraries_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.schools_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");	
 		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.water_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		mesonet.cc_rainfall_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+		//mesonet.cc_structure_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);
 		mesonet.libraries_shape.layer.attr("d", mesonet.path);
+		mesonet.schools_shape.layer.attr("d", mesonet.path);
+		mesonet.water_shape.layer.attr("d", mesonet.path);
+		mesonet.cc_rainfall_shape.layer.attr("d", mesonet.path);
+		//mesonet.cc_structure_shape.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
 		mesonet.asos_stations
 			.attr("cx", function(d) {
@@ -531,13 +599,6 @@ drawcollege:function(){
 				return mesonet.project([d.longitude*1,d.latitude*1])[1];
 			});
 
-		mesonet.water_stations
-			.attr("cx", function(d) {
-				return mesonet.project([d.longitude*1,d.latitude*1])[0];
-			})
-			.attr("cy", function(d) {
-				return mesonet.project([d.longitude*1,d.latitude*1])[1];
-			});
 	}, 
 	project : function(x) {
 		var point = mesonet.map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
