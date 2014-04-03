@@ -326,7 +326,7 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 	background-color:#fff;padding:5px;margin:5px;border-radius:5px;
 }
 #container #layers_selector{
-	background-color:#fff;padding:5px;margin:5px;border-radius:5px;width:95%;height:80%;overflow-y:scroll;
+	background-color:#fff;padding:5px;margin:5px;border-radius:5px;width:95%;height:80%;overflow-y:auto;
 }
 .greybox{
 	padding:5px;margin:5px;border-radius:5px;
