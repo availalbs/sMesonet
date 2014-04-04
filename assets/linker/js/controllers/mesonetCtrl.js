@@ -21,7 +21,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 					$scope.getUserStations();
 				}else{
 					sailsSocket.get(
-					'/mesoMap/4',{},
+					'/mesoMap/25',{},
 					function(response){
 							$scope.mesoMap = response;
 							$scope.stations = response.mapData;
@@ -38,7 +38,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   $scope.getUserStations = function(){
 		if($scope.user.mapId != -1 && $scope.user.mapId !== null){
 			sailsSocket.get(
-				'/mesoMap/4',{},
+				'/mesoMap/25',{},
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
