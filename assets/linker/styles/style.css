@@ -206,7 +206,7 @@ em													{font-style:italic;}
  padding-left:25px;
 }
 
-#hover	{background:#fcfcfc; color:#666; float:right; position:fixed; right:20%; width:200px; bottom:0;}
+#hover	{background:#fcfcfc; color:#666; float:right; position:fixed; right:20%; width:250px; bottom:0;}
 
 
 #graph{
@@ -317,6 +317,12 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 	cursor:pointer;
 }
 .cc_structure:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+}
+
+.users:hover{
 	stroke: rgb(255, 0, 0);
 	stroke-width: 3pt;
 	cursor:pointer;

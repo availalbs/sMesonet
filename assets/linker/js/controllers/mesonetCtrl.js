@@ -34,7 +34,25 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 			}
     });
   });
+  var userStationLegend = function(){
+  	$('#economic').append('<li><a style="height:35px" id="users" class="secret active-secret active">User Stations</a></li>');
+  	$('#economic li a#users').on('click',function(){
+		if($(this).hasClass('active')){
+			$(this).removeClass('active');
+			$(this).removeClass('active-secret');
+			$('img[alt="user"]').hide(500);
+			$('#'+$(this).attr('id')+'_legend').hide(500);
+		}else{
+			if($(this).hasClass('secret')){
+				$(this).addClass('active-secret');
+			}
+			$(this).addClass('active');
+			$('img[alt="user"]').show(500);
+			$('#'+$(this).attr('id')+'_legend').show(500);
+		}
+	});
 	
+  }
   $scope.getUserStations = function(){
 		if($scope.user.mapId != -1 && $scope.user.mapId !== null){
 			sailsSocket.get(
@@ -51,16 +69,42 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 							}
 						}
 						mesoStation.stations = $scope.stations;
-						mesoStation.drawStations();
+						
 						
 						if($scope.user.accessLevel == 1) {
 							$scope.editable = true;
-						}
+							sailsSocket.get(
+								'/mesomap/userStations',{},
+								function(response){
+									var actualStations = [];
+									response.forEach(function(userStations){
+										if(userStations.stations.length >= 1){
+											userStations.stations.forEach(function(station){
+												station.username = userStations.username;
+												station.name = station.id + " " +userStations.username;
+												actualStations.push(station);
+											})
+										}
+									});
+									actualStations.forEach(function(d){
+										$scope.stations.push(d);
+									});
+									mesoStation.drawStations();
+									userStationLegend();
+									mesoStation.setDraggable($scope.editable);
+									$scope.markers = mesoStation.markers;
+									$scope.bindMarkers($scope.editable);
+								}
+							);
+							
+							
 
-						mesoStation.setDraggable($scope.editable);
-						$scope.markers = mesoStation.markers;
-						
-						$scope.bindMarkers($scope.editable);
+						}else{
+							mesoStation.drawStations();
+							mesoStation.setDraggable($scope.editable);
+							$scope.markers = mesoStation.markers;
+							$scope.bindMarkers($scope.editable);
+						}
 			});
 		}else{
 			$scope.newMap();
@@ -429,6 +473,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.user = {};
 				$scope.loggedIn = false;
 				mesoStation.setDraggable(false);
+				$('#users').hide();
 			});
 	};
 

@@ -50,7 +50,12 @@ var mesonet = {
 	cc_rainfall_shape:[],
 	cc_rainfall_g:{},
 	/*
-	cc_structure:cc_structure_geo,
+	marfc:marfc_geo,
+	marfc_shape:[],
+	marfc_g:{},
+	user_g:{},
+	user_stations:{},
+		cc_structure:cc_structure_geo,
 	cc_structure_shape:[],
 	cc_structure_g:{},
 */
@@ -64,6 +69,7 @@ var mesonet = {
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
+		//loader.push(mesonet.drawmarfc);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
 		loader.push(mesonet.drawschools);
@@ -71,6 +77,7 @@ var mesonet = {
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
 		loader.push(mesonet.drawccrain);
+		
 		//loader.push(mesonet.drawccstruct);
 
 		loader.run();
@@ -141,6 +148,61 @@ var mesonet = {
 		.fail(function(data) { console.log(data.responseText); });
 		loader.run();
 	},
+
+	drawUserStation:function(serverData){
+		var actualStations = [];
+		serverData.forEach(function(userStations){
+			if(userStations.stations.length >= 1){
+				userStations.stations.forEach(function(station){
+					station.username = userStations.username;
+					actualStations.push(station);
+				})
+			}
+		});
+			
+		//console.log(station.lat,station.lng, station.elevation, station.name,station.username);
+		//mesonet.user_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide users");
+		mesonet.user_stations = mesonet.g.selectAll("circle.users")
+		.data(actualStations)
+			.enter()
+			.append("circle")
+			.classed("users", true)
+			.attr({
+				r: 4,
+				cx: function(d,i) {
+					return mesonet.project([d.lng*1,d.lat*1])[0];
+				},
+				cy: function(d,i) {
+					return mesonet.project([d.lng*1,d.lat*1])[1];
+				},
+				"fill": "#9C4C0D",
+				"station_name": function(d,i) {
+					return d.name+' '+ d.username;
+				},
+				"elevation": function(d,i) {
+					return d.elevation;
+				},
+			})
+			.on("mouseover", function(self) {
+				self = $(this);
+				var text = "<p><strong>User Station<br></strong>" + self.attr("station_name") + "<br>Elevation: "+ self.attr("elevation")+"</p>";
+				$("#info").show().html(text);
+			})
+			.on("mouseout", function(self) {
+				self = $(this);
+				$("#info").hide().html("");
+			});
+				
+
+		//console.log(mesonet.asos_stations);
+		mesonet.map.on("viewreset", mesonet.reset);
+		//mesonet.reset();
+		loader.run();
+
+		
+	},
+
+
 	drawCounties:function(){
 			mesonet.bounds = d3.geo.bounds(mesonet.ny_counties);
 			path = d3.geo.path().projection(mesonet.project);
@@ -202,7 +264,7 @@ var mesonet = {
 	drawHuc10:function(){
 
 			mesonet.huc10_shape.color = "#3399FF"
-			mesonet.huc10_shape.layer = mesonet.huc10_g.selectAll("path.huc10_shape")
+			mesonet.huc10_shape.layer = mesonet.g.selectAll("path.huc10_shape")
 				.data(topojson.feature(mesonet.huc10, mesonet.huc10.objects.layer1).features)
 				.enter()
 				.append("path")
@@ -232,7 +294,7 @@ var mesonet = {
 	drawHuc8:function(){
 
 			mesonet.huc8_shape.color = "#FF6600"
-			mesonet.huc8_shape.layer = mesonet.huc8_g.selectAll("path.huc8_shape")
+			mesonet.huc8_shape.layer = mesonet.g.selectAll("path.huc8_shape")
 				.data(topojson.feature(mesonet.huc8, mesonet.huc8.objects.layer1).features)
 				.enter()
 				.append("path")
@@ -258,10 +320,38 @@ var mesonet = {
 			loader.run();
 	},
 
+/*
+	drawmarfc:function(){
+			mesonet.marfc_shape.color = "#FF6600"
+			mesonet.marfc_shape.layer = mesonet.g.selectAll("path.marfc_shape")
+				.data(topojson.feature(mesonet.marfc, mesonet.marfc.objects.marfc).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "marfc")
+				.attr("name_long",function(d){ return d.properties['name'];})
+				.style("fill","#FF6600")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+*/
 	drawcollege:function(){
 
 			mesonet.college_shape.color = "#0027FF"
-			mesonet.college_shape.layer = mesonet.college_g.selectAll("path.college_shape")
+			mesonet.college_shape.layer = mesonet.g.selectAll("path.college_shape")
 				.data(mesonet.college.features)
 				.enter()
 				.append("path")
@@ -287,7 +377,7 @@ var mesonet = {
 	drawlibraries:function(){
 
 			mesonet.libraries_shape.color = "#77FFC6"
-			mesonet.libraries_shape.layer = mesonet.libraries_g.selectAll("circle.libraries")
+			mesonet.libraries_shape.layer = mesonet.g.selectAll("circle.libraries")
 				.data(topojson.feature(mesonet.libraries, mesonet.libraries.objects.libraries2).features)
 				.enter()
 				.append("path")
@@ -313,7 +403,7 @@ var mesonet = {
 	drawschools:function(){
 
 			mesonet.schools_shape.color = "#00FF0E"
-			mesonet.schools_shape.layer = mesonet.schools_g.selectAll("circle.schools")
+			mesonet.schools_shape.layer = mesonet.g.selectAll("circle.schools")
 				.data(topojson.feature(mesonet.schools, mesonet.schools.objects.ny_schools).features)
 				.enter()
 				.append("path")
@@ -335,9 +425,10 @@ var mesonet = {
 				
 			loader.run();
 	},
+
 	drawwater:function(){
 			mesonet.water_shape.color = "#FF9500"
-			mesonet.water_shape.layer = mesonet.water_g.selectAll("circle.water")
+			mesonet.water_shape.layer = mesonet.g.selectAll("circle.water")
 				.data(topojson.feature(mesonet.water, mesonet.water.objects.water_level).features)
 				.enter()
 				.append("path")
@@ -359,9 +450,10 @@ var mesonet = {
 			//mesonet.reset();	
 			loader.run();
 	},
+
 	drawccrain:function(){
 			mesonet.cc_rainfall_shape.color = "#FF00E3"
-			mesonet.cc_rainfall_shape.layer = mesonet.cc_rainfall_g.selectAll("circle.cc_rainfall")
+			mesonet.cc_rainfall_shape.layer = mesonet.g.selectAll("circle.cc_rainfall")
 				.data(topojson.feature(mesonet.cc_rainfall, mesonet.cc_rainfall.objects.precip).features)
 				.enter()
 				.append("path")
@@ -443,13 +535,13 @@ var mesonet = {
 		$("#rainfall_layer_legend").html(legendText);
 			//
 	},
+
 	drawASOS : function(){
-		mesonet.asos_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide asos_stations");
-		mesonet.asos_stations = mesonet.asos_g.selectAll("circle.asos")
+		mesonet.asos_stations = mesonet.g.selectAll("circle.asos")
 			.data(mesonet.asos)
 				.enter()
 				.append("circle")
-				.classed("asos", true)
+				.classed("asos_stations", true)
 				.attr({
 					r: 4,
 					cx: function(d,i) {
@@ -481,12 +573,12 @@ var mesonet = {
 	},
 
 	drawwind : function(){
-		mesonet.wind_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide wind_stations");
-		mesonet.wind_stations = mesonet.wind_g.selectAll("circle.wind")
+		mesonet.wind_stations = mesonet.g.selectAll("circle.wind")
 			.data(mesonet.wind)
 				.enter()
 				.append("circle")
-				.classed("wind", true)
+				.classed("wind_stations", true)
+				//.attr("class", "wind_stations")
 				.attr({
 					r: 4,
 					cx: function(d,i) {
@@ -540,15 +632,9 @@ var mesonet = {
 			
 		mesonet.svg = d3.select(mesonet.map.getPanes().overlayPane).append("svg");
 		mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");
-		mesonet.huc10_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc10");
-		mesonet.huc8_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide huc8");
-		mesonet.college_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-		mesonet.libraries_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-		mesonet.water_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-		mesonet.cc_rainfall_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-		mesonet.cc_structure_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
-		mesonet.schools_g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide");
 		mesonet.path = d3.geo.path().projection(mesonet.project);
+		
+
 		loader.run();
 		mesonet.reset();
 	},
@@ -563,19 +649,10 @@ var mesonet = {
 			.style("margin-left", bottomLeft[0] + "px")
 			.style("margin-top", topRight[1] + "px");
 		mesonet.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.huc10_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.huc8_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.college_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.libraries_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.schools_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");	
-		mesonet.asos_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.wind_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.water_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		mesonet.cc_rainfall_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-		//mesonet.cc_structure_g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
+		//mesonet.marfc_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);
 		mesonet.libraries_shape.layer.attr("d", mesonet.path);
 		mesonet.schools_shape.layer.attr("d", mesonet.path);
@@ -583,6 +660,7 @@ var mesonet = {
 		mesonet.cc_rainfall_shape.layer.attr("d", mesonet.path);
 		//mesonet.cc_structure_shape.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
+		
 		mesonet.asos_stations
 			.attr("cx", function(d) {
 				return mesonet.project([d.longitude*1,d.latitude*1])[0];
@@ -604,6 +682,7 @@ var mesonet = {
 		var point = mesonet.map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
 		return [point.x, point.y];
 	},
+	
 	updateMap : function() {
 		loader.push(mesonet.loadData);
 		loader.run();
