@@ -42,6 +42,10 @@ module.exports.routes = {
   '/':{
     view: 'mesonet/index'
   },
+  '/mesomap/userStations':{
+    controller:'mesomapController',
+    action:'allStations'
+  },
   
   //
   // Passport Auth Routes

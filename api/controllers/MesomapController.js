@@ -17,7 +17,20 @@
 
 module.exports = {
     
-  
+
+  allStations: function (req,res) {
+    User.find({accessLevel:0}).done(function(err, users){
+      if (err) console.log(err);
+      var output=[];
+    users.forEach(function(d){
+      if(d.stations){
+        var info = {stations:d.stations,username:d.username}
+        output.push(info);
+      }
+    })
+    res.json(output);
+    }); 
+  },
 
 
   /**

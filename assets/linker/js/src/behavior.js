@@ -14,9 +14,12 @@ $(function(){
 	$('#wind_stations_legend').hide();
 	$('#libraries_legend').hide();
 	$('#schools_legend').hide();
+	//$('#leaflet-marker-pane_legend').hide();
+	$('#asos_stations_legend').hide();
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
 	$('.huc8').hide();
+	$('.marfc').hide();
 	$('.college').hide();
 	$('.water').hide();
 	$('.cc_rainfall').hide();
@@ -24,6 +27,11 @@ $(function(){
 	$('.wind_stations').hide();
 	$('.libraries').hide();
 	$('.schools').hide();
+	$('.asos_stations').hide();
+	//$('.leaflet-marker-pane').hide();
+
+	
+							
 	
 	//var map = {"200":2645,"199":2648,"198":,}
 
@@ -54,6 +62,7 @@ $(function(){
 
 
 	$('#economic li a').on('click',function(){
+	
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
 			$(this).removeClass('active-secret');

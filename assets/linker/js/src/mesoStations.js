@@ -16,7 +16,7 @@ mesoStation = {
 		if(mesoStation.markers.length > 0) { mesoStation.clearMarkers(); }
 
 		mesoStation.stations.forEach(function(d,i){
-			var station = L.marker([d.lat,d.lng],{draggable:mesoStation.draggable});
+			var station = L.marker([d.lat,d.lng],{draggable:mesoStation.draggable,alt:d.type});
 			
 			switch(d.type){
 				case "mesonet":
