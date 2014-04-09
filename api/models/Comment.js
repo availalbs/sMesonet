@@ -13,6 +13,7 @@ module.exports = {
 		userId : 'integer',
 		username : 'string',
 		type : 'string',
-		body : 'text'
+		body : 'text',
+		primary : 'string'
   }
 };

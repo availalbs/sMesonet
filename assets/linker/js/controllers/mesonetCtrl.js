@@ -21,7 +21,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 					$scope.getUserStations();
 				}else{
 					sailsSocket.get(
-					'/mesoMap/25',{},
+					'/mesoMap/4',{},
 					function(response){
 							$scope.mesoMap = response;
 							$scope.stations = response.mapData;
@@ -56,7 +56,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   $scope.getUserStations = function(){
 		if($scope.user.mapId != -1 && $scope.user.mapId !== null){
 			sailsSocket.get(
-				'/mesoMap/25',{},
+				'/mesoMap/4',{},
 				function(response){
 						$scope.mesoMap = response;
 						$scope.stations = response.mapData;
@@ -114,9 +114,12 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	$scope.exportComments = function (){
 		sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id}},
 			function(response){
-				var output  = [['user','station_id','type','body','createdAt']];
+				var output  = [['user','station_id','type','body','1st Tier?','createdAt']];
 				response.forEach(function(comment){
-					output.push([comment.username,comment.userId+"_"+comment.stationId,comment.type,comment.body,comment.createdAt]);
+					if(!comment.primary){
+						comment.primary = '';
+					}
+					output.push([comment.username,comment.userId+"_"+comment.stationId,comment.type,comment.body,comment.primary,comment.createdAt]);
 				})
 				downloadCSV(output,"mesonet_comments.csv",'#export_comments');
 			}
@@ -486,6 +489,7 @@ function CommentModalCtrl($scope, $modalInstance,sailsSocket,user,station_id,map
 	$scope.comment = {};
 	$scope.comment.mapId = map_id;
 	$scope.comment.stationId = station_id;
+	$scope.comment.primary = '';
 
 	if($scope.user.id){
 	
