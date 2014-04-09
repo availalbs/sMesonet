@@ -14,7 +14,6 @@ $(function(){
 	$('#wind_stations_legend').hide();
 	$('#libraries_legend').hide();
 	$('#schools_legend').hide();
-	//$('#leaflet-marker-pane_legend').hide();
 	$('#asos_stations_legend').hide();
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
@@ -28,9 +27,7 @@ $(function(){
 	$('.libraries').hide();
 	$('.schools').hide();
 	$('.asos_stations').hide();
-	//$('.leaflet-marker-pane').hide();
 
-	
 							
 	
 	//var map = {"200":2645,"199":2648,"198":,}
@@ -66,15 +63,28 @@ $(function(){
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
 			$(this).removeClass('active-secret');
-			$('.'+$(this).attr('id')).hide(500);
-			$('#'+$(this).attr('id')+'_legend').hide(500);
+			//console.log($(this).attr('id')+'x');
+			if($(this).attr('id') == 'markers'){
+				//console.log('img[alt="'+$(this).attr('subset')+'"]');
+				$('img[alt="'+$(this).attr('subset')+'"]').hide(500);
+				$('#'+$(this).attr('subset')+'_legend').hide(500);
+				console.log($(this).attr('subset'+'_legend').hide(500));
+			}else{
+				$('.'+$(this).attr('id')).hide(500);
+				$('#'+$(this).attr('id')+'_legend').hide(500);
+			}
 		}else{
 			if($(this).hasClass('secret')){
 				$(this).addClass('active-secret');
 			}
 			$(this).addClass('active');
-			$('.'+$(this).attr('id')).show(500);
-			$('#'+$(this).attr('id')+'_legend').show(500);
+			if($(this).attr('id') == 'markers'){
+				$('img[alt="'+$(this).attr('subset')+'"]').show(500);
+				$('#'+$(this).attr('subset')+'_legend').show(500);
+			}else{
+				$('.'+$(this).attr('id')).show(500);
+				$('#'+$(this).attr('id')+'_legend').show(500);
+			}
 		}
 	});
 

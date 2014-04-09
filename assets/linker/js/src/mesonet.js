@@ -49,10 +49,11 @@ var mesonet = {
 	cc_rainfall:cc_rainfall_geo,
 	cc_rainfall_shape:[],
 	cc_rainfall_g:{},
-	/*
 	marfc:marfc_geo,
 	marfc_shape:[],
 	marfc_g:{},
+	
+/*	
 	user_g:{},
 	user_stations:{},
 		cc_structure:cc_structure_geo,
@@ -69,7 +70,7 @@ var mesonet = {
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
-		//loader.push(mesonet.drawmarfc);
+		loader.push(mesonet.drawmarfc);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
 		loader.push(mesonet.drawschools);
@@ -204,7 +205,9 @@ var mesonet = {
 
 
 	drawCounties:function(){
-			mesonet.bounds = d3.geo.bounds(mesonet.ny_counties);
+			mesonet.bounds = [[-79.762152, 36.9][-71.856214,45.01585]]
+			//mesonet.bounds = d3.geo.bounds(mesonet.ny_counties);
+		
 			path = d3.geo.path().projection(mesonet.project);
 			mesonet.counties.max = 0;
 			mesonet.counties.min = 1000000;
@@ -320,16 +323,16 @@ var mesonet = {
 			loader.run();
 	},
 
-/*
+
 	drawmarfc:function(){
 			mesonet.marfc_shape.color = "#FF6600"
 			mesonet.marfc_shape.layer = mesonet.g.selectAll("path.marfc_shape")
-				.data(topojson.feature(mesonet.marfc, mesonet.marfc.objects.marfc).features)
+				.data(topojson.feature(mesonet.marfc, mesonet.marfc.objects.layer1).features)
 				.enter()
 				.append("path")
 				.attr("d", path)
 				.attr("class", "marfc")
-				.attr("name_long",function(d){ return d.properties['name'];})
+				.attr("name",function(d){ return d.properties['name_long'];})
 				.style("fill","#FF6600")
 	 			.style("opacity", 0.4)
 				.style("stroke",'#333')
@@ -347,7 +350,7 @@ var mesonet = {
 				
 			loader.run();
 	},
-*/
+
 	drawcollege:function(){
 
 			mesonet.college_shape.color = "#0027FF"
@@ -641,8 +644,8 @@ var mesonet = {
 
 	reset : function() {
 			
-		var bottomLeft = mesonet.project(mesonet.bounds[0]),
-			topRight = mesonet.project(mesonet.bounds[1]);
+		var bottomLeft = mesonet.project([-79.762152, 36.9]),
+			topRight = mesonet.project([-71.856214,45.01585]);
 			
 		mesonet.svg.attr("width", topRight[0] - bottomLeft[0])
 			.attr("height", bottomLeft[1] - topRight[1])
@@ -652,7 +655,7 @@ var mesonet = {
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
-		//mesonet.marfc_shape.layer.attr("d", mesonet.path);
+		mesonet.marfc_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);
 		mesonet.libraries_shape.layer.attr("d", mesonet.path);
 		mesonet.schools_shape.layer.attr("d", mesonet.path);

@@ -49,7 +49,7 @@ html(ng-app="app")
       h2
         a.closed(href='#') Legend
       #legend-detail
-        #leaflet-marker-pane_legend
+        #main_legend
           strong Proposed Sites
           ul
             li
@@ -64,7 +64,27 @@ html(ng-app="app")
             li 
               img(src='/linker/js/images/imp_forecasting.png' style="width:20px;height:20px")  
               span User Added site
-            
+            <hr>
+        #primary_legend
+          strong First 35 Sites
+          ul
+            li
+              img(src='/linker/js/images/grnsq.png' style="width:20px;height:20px") 
+              img(src='/linker/js/images/greentri.png' style="width:20px;height:20px")
+              span Profiler Site
+            li
+              img(src='/linker/js/images/bluesq.png' style="width:20px;height:20px")
+              img(src='/linker/js/images/bluetri.png' style="width:20px;height:20px")
+              span SUNY Site
+            li
+              img(src='/linker/js/images/redsq.png' style="width:20px;height:20px")
+              img(src='/linker/js/images/redtri.png' style="width:20px;height:20px")
+              span Canal Corp Site
+            li 
+              img(src='/linker/js/images/ylwsq.png' style="width:20px;height:20px") 
+              img(src='/linker/js/images/ylwtri.png' style="width:20px;height:20px")  
+              span NEPP Site
+            <hr>
         #asos_stations_legend
           ul
             li
@@ -119,8 +139,8 @@ html(ng-app="app")
               svg(width='20', height='20')
                 rect(width='15', height='15', fill='#000')
               span Flood Hazard Zone
-          #county_legend
-          #rainfall_layer_legend
+        #county_legend
+        #rainfall_layer_legend
     #container(ng-controller="SailsSocketCtrl")
       h1 MESONET Site Selection Tool
       #content
@@ -162,7 +182,9 @@ html(ng-app="app")
         #layers_selector
           ul#economic(style='list-style: none;')
             li
-              a(style='height:35px')#leaflet-marker-pane Proposed Mesonet Stations
+              a(style='height:35px' subset='main')#markers.active Proposed Mesonet Stations
+            li
+              a(style='height:35px' subset='primary')#markers.active First 35 Stations
             li
               a(style='height:35px')#asos_stations ASOS Stations
             li
@@ -179,8 +201,8 @@ html(ng-app="app")
               a(style='height:35px')#huc8 Subbasins (HUC8) 
             li
               a(style='height:35px')#huc10 Watersheds (HUC10)
-           // li
-            //  a(style='height:35px')#marfc MARFC SubBasins
+            li
+              a(style='height:35px')#marfc MARFC SubBasins
             li
               a(style='height:35px')#rainfall_layer Average Annual Rainfall
             li
@@ -245,7 +267,13 @@ html(ng-app="app")
                   option(value='high-impact')  Frequent high-impact events 
                   option(value='deficiency')  Model deficiency areas 
                   option(value='other-sectors')  Beneficial to other sectors 
-                  option(value='snow')  Snow measurement site 
+                  option(value='snow')  Snow measurement site
+             .col-sm-12
+                br
+                ='1st Tier Station? '
+                select(ng-model='comment.primary', style='padding: 5px; background-color: #fff;border:1px solid')
+                  option(value='Yes') Yes
+                  option(value='No')  No 
 
           .form-group
             .col-sm-12
