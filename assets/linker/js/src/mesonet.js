@@ -52,14 +52,10 @@ var mesonet = {
 	marfc:marfc_geo,
 	marfc_shape:[],
 	marfc_g:{},
-	
-/*	
-	user_g:{},
-	user_stations:{},
-		cc_structure:cc_structure_geo,
+	cc_structure:cc_structure_geo,
 	cc_structure_shape:[],
 	cc_structure_g:{},
-*/
+
 	init : function(container) {
 		if(typeof container != 'undefined'){ mesonet.container = container; }
 		loader.push(mesonet.loadNYS);
@@ -78,8 +74,7 @@ var mesonet = {
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
 		loader.push(mesonet.drawccrain);
-		
-		//loader.push(mesonet.drawccstruct);
+		loader.push(mesonet.drawccstruct);
 
 		loader.run();
 		toggles.init();
@@ -479,11 +474,11 @@ var mesonet = {
 			//console.log(mesonet.cc_rainfall.objects.precip);
 			loader.run();
 	},
-	/*
+	
 	drawccstruct:function(){
 			mesonet.cc_structure_shape.color = "#000000"
-			mesonet.cc_structure_shape.layer = mesonet.cc_structure_g.selectAll("circle.cc_structure")
-				.data(topojson.feature(mesonet.cc_structure, mesonet.cc_structure.objects.new_canal).features)
+			mesonet.cc_structure_shape.layer = mesonet.g.selectAll("circle.cc_structure")
+				.data(topojson.feature(mesonet.cc_structure, mesonet.cc_structure.objects.cc_struct).features)
 				.enter()
 				.append("path")
 				.attr("d", path)
@@ -500,12 +495,11 @@ var mesonet = {
 					self = $(this);
 					$("#info").hide().html("");
 				});
-			//	mesonet.setLegend();
-			//mesonet.reset();	
+			
 			loader.run();
-			console.log(mesonet.cc_structure.objects.new_canal);
+			
 	},
-*/
+
 	setLegend : function(){
 		var legendText = '<hr><h3>County Population</h3><ul id="tangle-legend">';
 		var prev = 0;
@@ -661,7 +655,7 @@ var mesonet = {
 		mesonet.schools_shape.layer.attr("d", mesonet.path);
 		mesonet.water_shape.layer.attr("d", mesonet.path);
 		mesonet.cc_rainfall_shape.layer.attr("d", mesonet.path);
-		//mesonet.cc_structure_shape.layer.attr("d", mesonet.path);
+		mesonet.cc_structure_shape.layer.attr("d", mesonet.path);
 		//mesonet.feature.attr("d", mesonet.path);
 		
 		mesonet.asos_stations
