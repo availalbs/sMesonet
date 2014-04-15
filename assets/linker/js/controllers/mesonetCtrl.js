@@ -113,7 +113,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	};
 
 	$scope.exportComments = function (){
-		sailsSocket.get('/comment/find',{"where":{"mapId":$scope.mesoMap.id}},
+		sailsSocket.get('/comment/',
 			function(response){
 				var output  = [['user','station_id','type','body','1st Tier?','createdAt']];
 				response.forEach(function(comment){
