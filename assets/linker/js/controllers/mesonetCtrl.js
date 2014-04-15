@@ -10,6 +10,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   $scope.addMarker = false;
   $scope.editable = false ;
   $scope.saveChanged = '';
+  $scope.userStationsLoaded = false;
   $scope.$on('sailsSocket:connect', function(ev, data) {
     // Get Session Status
     sailsSocket.get(
@@ -90,7 +91,10 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 										$scope.stations.push(d);
 									});
 									mesoStation.drawStations();
-									userStationLegend();
+									if(!$scope.userStationsLoaded){
+										$scope.userStationLegend();
+										$scope.userStationsLoaded = true;
+									}
 									mesoStation.setDraggable($scope.editable);
 									$scope.markers = mesoStation.markers;
 									$scope.bindMarkers($scope.editable);
