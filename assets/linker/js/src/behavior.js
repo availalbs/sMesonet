@@ -68,7 +68,7 @@ $(function(){
 				//console.log('img[alt="'+$(this).attr('subset')+'"]');
 				$('img[alt="'+$(this).attr('subset')+'"]').hide(500);
 				$('#'+$(this).attr('subset')+'_legend').hide(500);
-				console.log($(this).attr('subset'+'_legend').hide(500));
+				//console.log($(this).attr('subset'+'_legend').hide(500));
 			}else{
 				$('.'+$(this).attr('id')).hide(500);
 				$('#'+$(this).attr('id')+'_legend').hide(500);

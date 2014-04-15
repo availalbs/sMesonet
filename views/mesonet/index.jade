@@ -211,6 +211,8 @@ html(ng-app="app")
              a(style='height:35px')#water Water Level
             li  
              a(style='height:35px' ng-show="user.accessLevel == 1")#cc_rainfall.secret Canal Precip Gauges
+            li  
+             a(style='height:35px' ng-show="user.accessLevel == 1")#cc_structure.secret Canal Corp Structures
            
           div(id='main-nav' style='display:none;') 
             .user-info(ng-show="loggedIn") Logged in as 

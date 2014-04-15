@@ -105,6 +105,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 							$scope.markers = mesoStation.markers;
 							$scope.bindMarkers($scope.editable);
 						}
+					//console.log($scope.stations);
 			});
 		}else{
 			$scope.newMap();
