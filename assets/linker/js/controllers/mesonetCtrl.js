@@ -92,7 +92,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 									});
 									mesoStation.drawStations();
 									if(!$scope.userStationsLoaded){
-										$scope.userStationLegend();
+										userStationLegend();
 										$scope.userStationsLoaded = true;
 									}
 									mesoStation.setDraggable($scope.editable);
