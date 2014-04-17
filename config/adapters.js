@@ -32,5 +32,15 @@ module.exports.adapters = {
     database:'mesonet',
     port: 5432,
     pool: true
+  },
+    postgres_postgis:{
+    module: 'sails-postgresql',
+    host: 'lor.availabs.org',
+    user: 'postgres',
+    password: 'transit',
+    database:'ny_parcels',
+    port: 5432,
+    pool: true
   }
 };
+

@@ -46,6 +46,11 @@ module.exports.routes = {
     controller:'mesomapController',
     action:'allStations'
   },
+
+   '/geodata/getInfo':{
+    controller:'GeodataController',
+    action:'getPointInfo'
+  },
   
   //
   // Passport Auth Routes

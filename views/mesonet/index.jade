@@ -109,6 +109,12 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.schools(cx='10', cy='10', r='7', fill='#00FF0E')
               span Public Schools
+        #nysdot_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.schools(cx='10', cy='10', r='7', fill='#7967FF')
+              span NYSDOT CORS
         #wind_stations_legend
           ul
             li
@@ -181,10 +187,7 @@ html(ng-app="app")
         strong Map Layers
         #layers_selector
           ul#economic(style='list-style: none;')
-            li
-              a(style='height:35px' subset='main')#markers.active Proposed Mesonet Stations
-            li
-              a(style='height:35px' subset='primary')#markers.active First 35 Stations
+                      
             li
               a(style='height:35px')#asos_stations ASOS Stations
             li
@@ -202,6 +205,12 @@ html(ng-app="app")
             li
               a(style='height:35px')#huc10 Watersheds (HUC10)
             li
+              a(style='height:35px')#congress Congressional Districts
+            li
+              a(style='height:35px')#assembly State Assembly Districts
+            li
+              a(style='height:35px')#senate State Senate Districts
+            li
               a(style='height:35px')#marfc MARFC SubBasins
             li
               a(style='height:35px')#rainfall_layer Average Annual Rainfall
@@ -209,10 +218,24 @@ html(ng-app="app")
               a(style='height:35px')#floodplain_layer Flood Hazard Zone
             li  
              a(style='height:35px')#water Water Level
+            li
+              <hr>
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0" subset='primary')#markers.active First 35 Stations
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0" subset='main')#markers.active Proposed Mesonet Stations
             li  
-             a(style='height:35px' ng-show="user.accessLevel == 1")#cc_rainfall.secret Canal Precip Gauges
+             a(style='height:35px' ng-show="user.accessLevel == 0")#cc_rainfall.secret Canal Precip Gauges
             li  
-             a(style='height:35px' ng-show="user.accessLevel == 1")#cc_structure.secret Canal Corp Structures
+             a(style='height:35px' ng-show="user.accessLevel == 0")#cc_structure.secret Canal Corp Structures
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar1km Radar Coverage (1 km)
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar1_5km Radar Coverage (1.5 km)
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar2km Radar Coverage (2 km)
+            li
+              a(style='height:35px' ng-show="user.accessLevel >= 0")#nysdot NYSDOT CORS
            
           div(id='main-nav' style='display:none;') 
             .user-info(ng-show="loggedIn") Logged in as 
@@ -225,7 +248,7 @@ html(ng-app="app")
                 a.col-sm-6.btn.btn-primary.btm-clear#export_comments(ng-show="user.accessLevel == 1" style="margin-bottom:5px;padding-left:5px;" ng-click="exportComments()") Export Comments
                 a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
                 a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
-            a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
+        a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
                 //a.btn(ng-click="loadStops()" ) loadStops
 
         //strong Export Mesonet Sites
