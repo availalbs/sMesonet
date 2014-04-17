@@ -34,15 +34,29 @@ var mesonet = {
 	huc8:huc8_geo,
 	huc8_shape:[],
 	huc8_g:{},
+	assembly:assembly_geo,
+	assembly_shape:[],
+	senate:senate_geo,
+	senate_shape:[],
+	congress:congress_geo,
+	congress_shape:[],
 	college_g:{},
 	college:college_geo,
 	college_shape:[],
+	radar1km:radar1km_geo,
+	radar1km_shape:[],
+	radar1_5km:radar1_5km_geo,
+	radar1_5km_shape:[],
+	radar2km:radar2km_geo,
+	radar2km_shape:[],
 	libraries_g:{},
 	libraries:libraries_geo,
 	libraries_shape:[],
 	schools_g:{},
 	schools:schools_geo,
 	schools_shape:[],
+	nysdot:nysdot_geo,
+	nysdot_shape:[],
 	water:water_geo,
 	water_shape:[],
 	water_g:{},
@@ -66,10 +80,17 @@ var mesonet = {
 		loader.push(mesonet.drawCounties);
 		loader.push(mesonet.drawHuc10);
 		loader.push(mesonet.drawHuc8);
+		loader.push(mesonet.drawassembly);
+		loader.push(mesonet.drawcongress);
+		loader.push(mesonet.drawsenate);
+		loader.push(mesonet.drawradar1km);
+		loader.push(mesonet.drawradar2km);
+		loader.push(mesonet.drawradar1_5km);
 		loader.push(mesonet.drawmarfc);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
 		loader.push(mesonet.drawschools);
+		loader.push(mesonet.drawnysdot);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
@@ -200,8 +221,8 @@ var mesonet = {
 
 
 	drawCounties:function(){
-			mesonet.bounds = [[-79.762152, 36.9][-71.856214,45.01585]]
-			//mesonet.bounds = d3.geo.bounds(mesonet.ny_counties);
+			mesonet.bounds = [[-85.495605,33.937663][-68.911743,46.30022]]
+			//mesonet.bounds = d3.geo.bounds(mesonet.radar2km);
 		
 			path = d3.geo.path().projection(mesonet.project);
 			mesonet.counties.max = 0;
@@ -317,7 +338,179 @@ var mesonet = {
 				
 			loader.run();
 	},
+	
+	drawassembly:function(){
 
+			mesonet.assembly_shape.color = "#A748FF"
+			mesonet.assembly_shape.layer = mesonet.g.selectAll("path.assembly_shape")
+				.data(topojson.feature(mesonet.assembly, mesonet.assembly.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "assembly")
+				.attr("assembly_code",function(d){ return d.properties['NAMELSAD'];})
+				.attr("ad_name",function(d){ return d.properties['AD_Name'];})
+				.style("fill","#A748FF")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("assembly_code") +"</strong><br>"+self.attr("ad_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawsenate:function(){
+
+			mesonet.senate_shape.color = "#FFD929"
+			mesonet.senate_shape.layer = mesonet.g.selectAll("path.senate_shape")
+				.data(topojson.feature(mesonet.senate, mesonet.senate.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "senate")
+				.attr("senate_code",function(d){ return d.properties['NAMELSAD'];})
+				.attr("rep_name",function(d){ return d.properties['Rep_Name'];})
+				.style("fill","#FFD929")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("senate_code") +"</strong><br>"+self.attr("rep_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawcongress:function(){
+
+			mesonet.congress_shape.color = "#00FF3A"
+			mesonet.congress_shape.layer = mesonet.g.selectAll("path.congress_shape")
+				.data(topojson.feature(mesonet.congress, mesonet.congress.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "congress")
+				.attr("congress_code",function(d){ return d.properties['NAMELSAD'];})
+				.attr("cd_name",function(d){ return d.properties['CD_Name'];})
+				.style("fill","#00FF3A")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("congress_code") +"</strong><br>"+self.attr("cd_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawradar1km:function(){
+
+			mesonet.radar1km_shape.color = "#00FF3A"
+			mesonet.radar1km_shape.layer = mesonet.g.selectAll("path.radar1km_shape")
+				.data(topojson.feature(mesonet.radar1km, mesonet.radar1km.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "radar1km")
+				.attr("radar1km_code",function(d){ return d.properties['SiteName'];})
+				.attr("k_name",function(d){ return d.properties['cSiteICAO'];})
+				.style("fill","#00FF3A")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("radar1km_code") +"</strong><br>"+self.attr("k_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+	drawradar1_5km:function(){
+
+			mesonet.radar1_5km_shape.color = "#FF6600"
+			mesonet.radar1_5km_shape.layer = mesonet.g.selectAll("path.radar1_5km_shape")
+				.data(topojson.feature(mesonet.radar1_5km, mesonet.radar1_5km.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "radar1_5km")
+				.attr("radar1_5km_code",function(d){ return d.properties['SiteName'];})
+				.attr("k_name",function(d){ return d.properties['cSiteICAO'];})
+				.style("fill","#FF6600")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("radar1_5km_code") +"</strong><br>"+self.attr("k_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawradar2km:function(){
+
+			mesonet.radar2km_shape.color = "#551a8b"
+			mesonet.radar2km_shape.layer = mesonet.g.selectAll("path.radar2km_shape")
+				.data(topojson.feature(mesonet.radar2km, mesonet.radar2km.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "radar2km")
+				.attr("radar2km_code",function(d){ return d.properties['SiteName'];})
+				.attr("k_name",function(d){ return d.properties['cSiteICAO'];})
+				.style("fill","#551a8b")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("radar2m_code") +"</strong><br>"+self.attr("k_name")+"</p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
 
 	drawmarfc:function(){
 			mesonet.marfc_shape.color = "#FF6600"
@@ -412,6 +605,32 @@ var mesonet = {
 	 			.on("mouseover", function(self) {
 					self = $(this);
 					var text = "<p><strong>"+ self.attr("school_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawnysdot:function(){
+
+			mesonet.nysdot_shape.color = "#7967FF"
+			mesonet.nysdot_shape.layer = mesonet.g.selectAll("circle.nysdot")
+				.data(topojson.feature(mesonet.nysdot, mesonet.nysdot.objects.nysdot_cors).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "nysdot")
+				.attr("nysdot_name",function(d){ return d.properties['NAME'];})
+				.style("fill","#7967FF")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("nysdot_name") +"</strong></p>";
 		
 					$("#info").show().html(text);
 				})
@@ -638,8 +857,8 @@ var mesonet = {
 
 	reset : function() {
 			
-		var bottomLeft = mesonet.project([-79.762152, 36.9]),
-			topRight = mesonet.project([-71.856214,45.01585]);
+		var bottomLeft = mesonet.project([-85.495605,33.937663]),
+			topRight = mesonet.project([-68.911743,46.30022]);
 			
 		mesonet.svg.attr("width", topRight[0] - bottomLeft[0])
 			.attr("height", bottomLeft[1] - topRight[1])
@@ -649,10 +868,17 @@ var mesonet = {
 		mesonet.counties.layer.attr("d", mesonet.path);
 		mesonet.huc10_shape.layer.attr("d", mesonet.path);
 		mesonet.huc8_shape.layer.attr("d", mesonet.path);
+		mesonet.senate_shape.layer.attr("d", mesonet.path);
+		mesonet.assembly_shape.layer.attr("d", mesonet.path);
+		mesonet.congress_shape.layer.attr("d", mesonet.path);
+		mesonet.radar1km_shape.layer.attr("d", mesonet.path);
+		mesonet.radar2km_shape.layer.attr("d", mesonet.path);
+		mesonet.radar1_5km_shape.layer.attr("d", mesonet.path);
 		mesonet.marfc_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);
 		mesonet.libraries_shape.layer.attr("d", mesonet.path);
 		mesonet.schools_shape.layer.attr("d", mesonet.path);
+		mesonet.nysdot_shape.layer.attr("d", mesonet.path);
 		mesonet.water_shape.layer.attr("d", mesonet.path);
 		mesonet.cc_rainfall_shape.layer.attr("d", mesonet.path);
 		mesonet.cc_structure_shape.layer.attr("d", mesonet.path);

@@ -14,6 +14,7 @@ $(function(){
 	$('#wind_stations_legend').hide();
 	$('#libraries_legend').hide();
 	$('#schools_legend').hide();
+	$('#nysdot_legend').hide();
 	$('#asos_stations_legend').hide();
 	$('#floodplain_layer_legend').hide();
 	$('.huc10').hide();
@@ -27,6 +28,13 @@ $(function(){
 	$('.libraries').hide();
 	$('.schools').hide();
 	$('.asos_stations').hide();
+	$('.congress').hide();
+	$('.assembly').hide();
+	$('.senate').hide();
+	$('.radar1km').hide();
+	$('.radar1_5km').hide();
+	$('.radar2km').hide();
+	$('.nysdot').hide();
 
 							
 	
