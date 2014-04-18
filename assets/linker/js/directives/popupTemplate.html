@@ -11,9 +11,18 @@
 	  	<td><strong>Station Type:</strong></td>
 			<td>
 		  	<select ng-model="station.type" ng-change='changeIcon(station)' style='padding:5px;background-color:#fff'>
-			  	<option value='mesonet'> Mesonet Site</option>
+			  	<!--<option value='mesonet'> Mesonet Site</option>
 			  	<option value='profiler'> Profiler site </option>
 			  	<option value='suny'> SUNY System Site</option>
+			  	-->
+			  	<option value='primary_Canal'> Primary Canal Site</option>
+			  	<option value='primary_Profiler'>Primary Profiler site </option>
+			  	<option value='primary_SUNY'>Primary SUNY System Site</option>
+			  	<option value='primary_NEPP'>Primary NEPP</option>
+			  	<option value='secondary_Profiler'>Secondary Profiler site </option>
+			  	<option value='secondary_SUNY'>Secondary SUNY System Site</option>
+			  	<option value='secondary_Canal'>Secondary Canal Site</option>
+			  	<option value='secondary_NEPP'>Secondary NEPP Site</option>
 			  <!-- 	<option value='high-impact'> Frequent high-impact events </option>
 			  	<option value='deficiency'> Model deficiency areas </option>
 			  	<option value='other-sectors'> Beneficial to other sectors </option>
@@ -24,8 +33,21 @@
 	  	<td><strong>Location:</strong></td><td>{{station.lat | number}},{{station.lng | number}}</td>
 		</tr>
 		<tr>
+	  	<td><strong>County:</strong></td><td>{{station.County_Name}}</td>
+		</tr>
+		<tr>
 	  	<td><strong>Elevation:</strong></td><td>{{station.elevation}} meters</td>
 		</tr>
+		<tr>
+	  	<td><strong>Congressional District:</strong></td><td>{{station.Congressional_District}}</td>
+		</tr>
+		<tr>
+	  	<td><strong>Assembly District:</strong></td><td>{{station.Assembly_District}}</td>
+		</tr>
+		<tr>
+	  	<td><strong>Senate District:</strong></td><td>{{station.Senate_District}}</td>
+		</tr>
+
 		<!-- <tr >
 	  	<td><strong>First Tier Site:</strong></td><td ng-show="station.type == ''">YES</td><td>NO</td>
 		</tr> -->
