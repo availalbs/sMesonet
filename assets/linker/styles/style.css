@@ -336,9 +336,10 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 .whitebox{
 	background-color:#fff;padding:5px;margin:5px;border-radius:5px;
 }
-#container #layers_selector{
-	background-color:#fff;padding:5px;margin:5px;border-radius:5px;width:95%;height:60%;overflow-y:auto;
+#container #layers_selector_main{
+	background-color:#fff;padding:5px;margin:5px;border-radius:5px;width:95%;height:auto;max-height:50%;overflow-y:auto;
 }
+
 .greybox{
 	padding:5px;margin:5px;border-radius:5px;
 }

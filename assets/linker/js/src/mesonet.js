@@ -49,6 +49,8 @@ var mesonet = {
 	radar1_5km_shape:[],
 	radar2km:radar2km_geo,
 	radar2km_shape:[],
+	//cc_land:cc_land_geo,
+	//cc_land_shape:[],
 	libraries_g:{},
 	libraries:libraries_geo,
 	libraries_shape:[],
@@ -86,6 +88,7 @@ var mesonet = {
 		loader.push(mesonet.drawradar1km);
 		loader.push(mesonet.drawradar2km);
 		loader.push(mesonet.drawradar1_5km);
+		//loader.push(mesonet.drawcc_land);
 		loader.push(mesonet.drawmarfc);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
@@ -511,7 +514,35 @@ var mesonet = {
 				
 			loader.run();
 	},
+/*
+	drawcc_land:function(){
 
+			mesonet.cc_land_shape.color = "#ff0"
+			mesonet.cc_land_shape.layer = mesonet.g.selectAll("path.cc_land_shape")
+				.data(topojson.feature(mesonet.cc_land, mesonet.cc_land.objects.layer1).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "cc_land")
+				.style("fill","#ff0")
+	 			.style("opacity", 0.4)
+				.style("stroke",'#333')
+				.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<strong>Canal Corporation Land</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+*/
 	drawmarfc:function(){
 			mesonet.marfc_shape.color = "#FF6600"
 			mesonet.marfc_shape.layer = mesonet.g.selectAll("path.marfc_shape")
@@ -848,8 +879,10 @@ var mesonet = {
 			
 		mesonet.svg = d3.select(mesonet.map.getPanes().overlayPane).append("svg");
 		mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");
+		//mesonet.g = mesonet.svg.append("g").attr("class", "leaflet-zoom-hide stations");
 		mesonet.path = d3.geo.path().projection(mesonet.project);
-		
+		$('img[alt="main"]').hide();
+		$('img[alt="primary"]').hide();
 
 		loader.run();
 		mesonet.reset();
@@ -873,6 +906,7 @@ var mesonet = {
 		mesonet.congress_shape.layer.attr("d", mesonet.path);
 		mesonet.radar1km_shape.layer.attr("d", mesonet.path);
 		mesonet.radar2km_shape.layer.attr("d", mesonet.path);
+		//mesonet.cc_land_shape.layer.attr("d", mesonet.path);
 		mesonet.radar1_5km_shape.layer.attr("d", mesonet.path);
 		mesonet.marfc_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);

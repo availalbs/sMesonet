@@ -9,6 +9,7 @@ $(function(){
 	$('#county_legend').hide();
 	$('#college_legend').hide();
 	$('#water_legend').hide();
+	$('#cc_land_legend').hide();
 	$('#cc_structure_legend').hide();
 	$('#cc_rainfall_legend').hide();
 	$('#wind_stations_legend').hide();
@@ -35,6 +36,9 @@ $(function(){
 	$('.radar1_5km').hide();
 	$('.radar2km').hide();
 	$('.nysdot').hide();
+	$('.cc_land').hide();
+	$('img[alt="main"]').hide();
+	$('img[alt="primary"]').hide();
 
 							
 	

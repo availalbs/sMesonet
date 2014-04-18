@@ -104,6 +104,9 @@ mesoStation = {
 		mesoStation.markers.forEach(function(station,i){
 			station.addTo(mesonet.map);
 		});
+		$('img[alt="primary"]').hide();
+		$('img[alt="main"]').hide();
+		$('img[alt="user"]').hide();
 	},
 	setDraggable : function(true_or_false){
 		mesoStation.draggable = true_or_false;

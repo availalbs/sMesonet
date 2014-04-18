@@ -20,6 +20,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 					$scope.loggedIn = true;
 					$scope.user = response.userInfo;
 					$scope.getUserStations();
+
 				}else{
 					sailsSocket.get(
 					'/mesoMap/4',{},
@@ -31,12 +32,14 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 							mesoStation.setDraggable(false);
 							$scope.markers = mesoStation.markers;
 							$scope.bindMarkers($scope.editable);
+							
 				});
 			}
     });
   });
   var userStationLegend = function(){
-  	$('#economic').append('<li><a style="height:35px" id="users" class="secret active-secret active">User Stations</a></li>');
+  	$('img[alt="user"]').hide();
+  	$('#economic').append('<li><a style="height:35px" id="users" class="secret">User Stations</a></li>');
   	$('#economic li a#users').on('click',function(){
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
@@ -133,12 +136,14 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 	};
 
 	$scope.exportStations = function(){
-		var output = [['id','name','type','elevation','lat','lng']];
+		var output = [['id','name','type','elevation','lat','lng','Assembly_District','Congressional_District','County_Name','HU8_Name','HU10_Name','RadarSite_1_5km','RadarSite_1km','RadarSite_2km','Senate_District','ad_name','cd_name']];
 		$scope.stations.forEach(function(station){
 			if(!station.elevation){
 				station.elevation = 0;
 			}
-			output.push([station.id,station.name,station.type,station.elevation,station.lat,station.lng]);
+			ad_name = '';
+			if(typeof station.ad_name != 'undefined') ad_name = station.ad_name.replace(',',' ');
+			output.push([station.id,station.name,station.type,station.elevation,station.lat,station.lng,station.Assembly_District,station.Congressional_District,station.County_Name,station.HU8_Name,station.HU10_Name,station.RadarSite_1_5km,station.RadarSite_1km,station.RadarSite_2km,station.Senate_District,ad_name,station.cd_name]);
 		});
 		downloadCSV(output,"meso_stations.csv",'#export_csv');
 		
@@ -285,6 +290,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$timeout(function(){
            $scope.saveChanged = '';
         },3000);
+				
 			});
 		
 					
@@ -429,6 +435,19 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 		});
 	};
 
+	$scope.pullData = function(){
+		console.log("pulling data yo.");
+		$scope.stations.forEach(function(station){
+			sailsSocket.post('/geodata/getInfo', {coords:[station.lat, station.lng]}, function(newInfo){
+				
+				for(key in newInfo[0]){
+					station[key] = newInfo[0][key]
+				}
+				console.log(station);
+			})
+		})
+	}
+
 	$scope.addStation = function(){
 		$scope.addMarker = true;
 		$('#map').css('cursor','crosshair');
@@ -449,7 +468,12 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				}
 			}
 		});
-		
+		sailsSocket.post('/geodata/getInfo', {coords:[lat, lng]}, function(newInfo){
+				for(key in newInfo[0]){
+					$scope.stations[i][key] = newInfo[0][key];
+				}
+			})
+
 	};
   
   //
@@ -467,6 +491,8 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.loggedIn = true;
 				$scope.user = result.user;
 				$scope.getUserStations();
+				$('#layers_selector_user').show();
+				$('#main-nav').show();
 
 			}
     });
@@ -482,6 +508,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
 				$scope.loggedIn = false;
 				mesoStation.setDraggable(false);
 				$('#users').hide();
+				$('#layers_selector_user').hide();
 			});
 	};
 

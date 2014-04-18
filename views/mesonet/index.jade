@@ -183,61 +183,8 @@ html(ng-app="app")
             | Number of Stations :
             span#num_stations
             br
-
-        strong Map Layers
-        #layers_selector
-          ul#economic(style='list-style: none;')
-                      
-            li
-              a(style='height:35px')#asos_stations ASOS Stations
-            li
-              a(style='height:35px')#wind_stations Wind Farms
-            li
-              a(style='height:35px')#college SUNY/CUNY Colleges
-            li
-              a(style='height:35px')#libraries Public Libraries
-            li
-              a(style='height:35px')#schools Public Schools
-            li
-              a(style='height:35px')#county County Population
-            li
-              a(style='height:35px')#huc8 Subbasins (HUC8) 
-            li
-              a(style='height:35px')#huc10 Watersheds (HUC10)
-            li
-              a(style='height:35px')#congress Congressional Districts
-            li
-              a(style='height:35px')#assembly State Assembly Districts
-            li
-              a(style='height:35px')#senate State Senate Districts
-            li
-              a(style='height:35px')#marfc MARFC SubBasins
-            li
-              a(style='height:35px')#rainfall_layer Average Annual Rainfall
-            li
-              a(style='height:35px')#floodplain_layer Flood Hazard Zone
-            li  
-             a(style='height:35px')#water Water Level
-            li
-              <hr>
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0" subset='primary')#markers.active First 35 Stations
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0" subset='main')#markers.active Proposed Mesonet Stations
-            li  
-             a(style='height:35px' ng-show="user.accessLevel == 0")#cc_rainfall.secret Canal Precip Gauges
-            li  
-             a(style='height:35px' ng-show="user.accessLevel == 0")#cc_structure.secret Canal Corp Structures
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar1km Radar Coverage (1 km)
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar1_5km Radar Coverage (1.5 km)
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0")#radar2km Radar Coverage (2 km)
-            li
-              a(style='height:35px' ng-show="user.accessLevel >= 0")#nysdot NYSDOT CORS
-           
-          div(id='main-nav' style='display:none;') 
+        a.col-sm-12.btn.btn-primary.btm-clea(ng-click="openModal()" ng-hide="loggedIn" ) Login  
+        div(id='main-nav' style='display:none;position:relative; top:1%;margin-bottom:5px;') 
             .user-info(ng-show="loggedIn") Logged in as 
               strong {{user.username}}
               span(style='font-size:12px;float:right;') {{saveChanged}}
@@ -248,11 +195,63 @@ html(ng-app="app")
                 a.col-sm-6.btn.btn-primary.btm-clear#export_comments(ng-show="user.accessLevel == 1" style="margin-bottom:5px;padding-left:5px;" ng-click="exportComments()") Export Comments
                 a.col-sm-12.btn.btn-primary.btm-clear(href='/admin/users' ng-show="user.accessLevel == 1" style="color:#fff;margin-bottom:5px;") Admin Panel
                 a.col-sm-12.btn.btn-primary.btm-clear(ng-click="logout()" style="") Logout
-        a.col-sm-12.btn(ng-click="openModal()" ng-hide="loggedIn" ) Login
+       
                 //a.btn(ng-click="loadStops()" ) loadStops
 
         //strong Export Mesonet Sites
         
+        #layers_selector_main(ng-show="user.accessLevel >= 0")
+          ul#economic(style='list-style: none;')
+              strong 
+              Map Layers
+                li
+                  a(style='height:35px' subset='primary')#markers.secret First 35 Stations
+                li
+                  a(style='height:35px' subset='main')#markers.secret Proposed Mesonet Stations
+                li
+                  a(style='height:35px')#asos_stations ASOS Stations
+                li
+                  a(style='height:35px')#wind_stations Wind Farms
+                li
+                  a(style='height:35px')#college SUNY/CUNY Colleges
+                li
+                  a(style='height:35px')#libraries Public Libraries
+                li
+                  a(style='height:35px')#schools Public Schools
+                li  
+                 a(style='height:35px')#cc_rainfall.secret Canal Precip Gauges
+                li  
+                 a(style='height:35px')#cc_structure.secret Canal Corp Structures
+                li
+                  a(style='height:35px')#nysdot.secret NYSDOT CORS
+                li
+                  a(style='height:35px')#county County Population
+                li
+                  a(style='height:35px')#congress Congressional Districts
+                li
+                  a(style='height:35px')#assembly State Assembly Districts
+                li
+                  a(style='height:35px')#senate State Senate Districts
+                li  
+                 a(style='height:35px')#water Water Level
+              #layers_selector_user(style='display:none;')
+                ul#economic(style='list-style: none;')
+                li
+                  a(style='height:35px')#marfc MARFC SubBasins
+                li
+                  a(style='height:35px')#huc8 Subbasins (HUC8) 
+                li
+                  a(style='height:35px')#huc10 Watersheds (HUC10)                  
+                li
+                  a(style='height:35px')#rainfall_layer Average Annual Rainfall
+                li
+                  a(style='height:35px')#floodplain_layer Flood Hazard Zone
+                li
+                  a(style='height:35px')#radar1km.secret Radar Coverage (1 km)
+                li
+                  a(style='height:35px')#radar1_5km.secret Radar Coverage (1.5 km)
+                li
+                  a(style='height:35px')#radar2km.secret Radar Coverage (2 km)   
         
     #info
 
