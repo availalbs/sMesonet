@@ -788,7 +788,7 @@ var mesonet = {
 			.data(mesonet.asos)
 				.enter()
 				.append("circle")
-				.classed("asos_stations", true)
+				.attr("class", "asos_stations")
 				.attr({
 					r: 4,
 					cx: function(d,i) {
@@ -820,12 +820,12 @@ var mesonet = {
 	},
 
 	drawwind : function(){
-		mesonet.wind_stations = mesonet.g.selectAll("circle.wind")
+		mesonet.wind_stations = mesonet.g.selectAll("circle.wind_stations")
 			.data(mesonet.wind)
 				.enter()
 				.append("circle")
-				.classed("wind_stations", true)
-				//.attr("class", "wind_stations")
+				//.classed("wind_stations", true)
+				.attr("class", "wind_stations")
 				.attr({
 					r: 4,
 					cx: function(d,i) {
