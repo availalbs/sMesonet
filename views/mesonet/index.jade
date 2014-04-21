@@ -223,15 +223,20 @@ html(ng-app="app")
                     a(style='height:35px;cursor:pointer')#libraries Public Libraries
                   li
                     a(style='height:35px;cursor:pointer')#schools Public Schools
-                  li  
-                   a(style='height:35px;cursor:pointer')#cc_rainfall Canal Precip Gauges
-                  li  
-                   a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
                   li
                     a(style='height:35px;cursor:pointer')#nysdot NYSDOT CORS
                   li  
                    a(style='height:35px;cursor:pointer')#water Water Level
-                br     
+                br
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#canal_corp" ).toggle();') Canal Corporation
+                #canal_corp(style='display:none;')
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_rainfall Canal Precip Gauges
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_land Canal Corp Land
+                br    
                 button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#political" ).toggle();') Political Boundaries
                 #political(style='display:none;')
                   li

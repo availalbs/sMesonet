@@ -49,8 +49,8 @@ var mesonet = {
 	radar1_5km_shape:[],
 	radar2km:radar2km_geo,
 	radar2km_shape:[],
-	//cc_land:cc_land_geo,
-	//cc_land_shape:[],
+	cc_land:cc_land_geo,
+	cc_land_shape:[],
 	libraries_g:{},
 	libraries:libraries_geo,
 	libraries_shape:[],
@@ -88,7 +88,7 @@ var mesonet = {
 		loader.push(mesonet.drawradar1km);
 		loader.push(mesonet.drawradar2km);
 		loader.push(mesonet.drawradar1_5km);
-		//loader.push(mesonet.drawcc_land);
+		loader.push(mesonet.drawcc_land);
 		loader.push(mesonet.drawmarfc);
 		loader.push(mesonet.drawcollege);
 		loader.push(mesonet.drawlibraries);
@@ -514,7 +514,7 @@ var mesonet = {
 				
 			loader.run();
 	},
-/*
+
 	drawcc_land:function(){
 
 			mesonet.cc_land_shape.color = "#ff0"
@@ -542,7 +542,7 @@ var mesonet = {
 			loader.run();
 	},
 
-*/
+
 	drawmarfc:function(){
 			mesonet.marfc_shape.color = "#FF6600"
 			mesonet.marfc_shape.layer = mesonet.g.selectAll("path.marfc_shape")
@@ -906,7 +906,7 @@ var mesonet = {
 		mesonet.congress_shape.layer.attr("d", mesonet.path);
 		mesonet.radar1km_shape.layer.attr("d", mesonet.path);
 		mesonet.radar2km_shape.layer.attr("d", mesonet.path);
-		//mesonet.cc_land_shape.layer.attr("d", mesonet.path);
+		mesonet.cc_land_shape.layer.attr("d", mesonet.path);
 		mesonet.radar1_5km_shape.layer.attr("d", mesonet.path);
 		mesonet.marfc_shape.layer.attr("d", mesonet.path);
 		mesonet.college_shape.layer.attr("d", mesonet.path);
