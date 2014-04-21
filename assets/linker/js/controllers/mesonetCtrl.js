@@ -39,7 +39,7 @@ app.controller('MesonetCtrl', function MesonetCtrl($scope, $modal, sailsSocket, 
   });
   var userStationLegend = function(){
   	$('img[alt="user"]').hide();
-  	$('#economic').append('<li><a style="height:35px" id="users" class="secret">User Stations</a></li>');
+  	$('#economic').append('<li><a style="height:35px; cursor:pointer;" id="users" class="secret">User Stations</a></li>');
   	$('#economic li a#users').on('click',function(){
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');

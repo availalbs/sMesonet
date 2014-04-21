@@ -70,11 +70,26 @@ $(function(){
 	});
 
 
+	$('.toggles').on('click',function(){
+	
+		if($(this).hasClass('fa-plus-square')){
+			$(this).attr('class', 'toggles i fa fa-minus-square');
+		
+		}else{
+			$(this).attr('class', 'toggles i fa fa-plus-square');
+			}
+		//console.log($("#").next("class"));
+		
+		//$( "#stations" ).toggle();
+	
+	});
+	
+
 	$('#economic li a').on('click',function(){
 	
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
-			$(this).removeClass('active-secret');
+			
 			//console.log($(this).attr('id')+'x');
 			if($(this).attr('id') == 'markers'){
 				//console.log('img[alt="'+$(this).attr('subset')+'"]');
@@ -87,7 +102,7 @@ $(function(){
 			}
 		}else{
 			if($(this).hasClass('secret')){
-				$(this).addClass('active-secret');
+				
 			}
 			$(this).addClass('active');
 			if($(this).attr('id') == 'markers'){

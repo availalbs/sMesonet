@@ -201,58 +201,70 @@ html(ng-app="app")
         //strong Export Mesonet Sites
         
         #layers_selector_main(ng-show="user.accessLevel >= 0")
-          ul#economic(style='list-style: none;')
-              strong 
-              Map Layers
-                li
-                  a(style='height:35px' subset='primary')#markers.secret First 35 Stations
-                li
-                  a(style='height:35px' subset='main')#markers.secret Proposed Mesonet Stations
-                li
-                  a(style='height:35px')#asos_stations ASOS Stations
-                li
-                  a(style='height:35px')#wind_stations Wind Farms
-                li
-                  a(style='height:35px')#college SUNY/CUNY Colleges
-                li
-                  a(style='height:35px')#libraries Public Libraries
-                li
-                  a(style='height:35px')#schools Public Schools
-                li  
-                 a(style='height:35px')#cc_rainfall.secret Canal Precip Gauges
-                li  
-                 a(style='height:35px')#cc_structure.secret Canal Corp Structures
-                li
-                  a(style='height:35px')#nysdot.secret NYSDOT CORS
-                li
-                  a(style='height:35px')#county County Population
-                li
-                  a(style='height:35px')#congress Congressional Districts
-                li
-                  a(style='height:35px')#assembly State Assembly Districts
-                li
-                  a(style='height:35px')#senate State Senate Districts
-                li  
-                 a(style='height:35px')#water Water Level
-              #layers_selector_user(style='display:none;')
-                ul#economic(style='list-style: none;')
-                li
-                  a(style='height:35px')#marfc MARFC SubBasins
-                li
-                  a(style='height:35px')#huc8 Subbasins (HUC8) 
-                li
-                  a(style='height:35px')#huc10 Watersheds (HUC10)                  
-                li
-                  a(style='height:35px')#rainfall_layer Average Annual Rainfall
-                li
-                  a(style='height:35px')#floodplain_layer Flood Hazard Zone
-                li
-                  a(style='height:35px')#radar1km.secret Radar Coverage (1 km)
-                li
-                  a(style='height:35px')#radar1_5km.secret Radar Coverage (1.5 km)
-                li
-                  a(style='height:35px')#radar2km.secret Radar Coverage (2 km)   
-        
+            ul#economic(style='list-style: none;')
+                strong Map Layers
+                br
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".stations" ).toggle();') Stations
+                #layers_selector_main.stations(style='display:none;')
+                  li
+                    a(style='height:35px;cursor:pointer' subset='primary')#markers First 35 Stations
+                  li
+                    a(style='height:35px;cursor:pointer' subset='main')#markers Proposed Mesonet Stations
+                  li
+                    a(style='height:35px;cursor:pointer')#asos_stations ASOS Stations
+                  li
+                    a(style='height:35px;cursor:pointer')#wind_stations Wind Farms
+                br       
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".structures" ).toggle();') Structures
+                #layers_selector_main.structures(style='display:none;')
+                  li
+                    a(style='height:35px;cursor:pointer')#college SUNY/CUNY Colleges
+                  li
+                    a(style='height:35px;cursor:pointer')#libraries Public Libraries
+                  li
+                    a(style='height:35px;cursor:pointer')#schools Public Schools
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_rainfall Canal Precip Gauges
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
+                  li
+                    a(style='height:35px;cursor:pointer')#nysdot NYSDOT CORS
+                  li  
+                   a(style='height:35px;cursor:pointer')#water Water Level
+                br     
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".political" ).toggle();') Political Boundaries
+                #layers_selector_main.political(style='display:none;')
+                  li
+                    a(style='height:35px;cursor:pointer')#county County Population
+                  li
+                    a(style='height:35px;cursor:pointer')#congress Congressional Districts
+                  li
+                    a(style='height:35px;cursor:pointer')#assembly State Assembly Districts
+                  li
+                    a(style='height:35px;cursor:pointer')#senate State Senate Districts
+                br
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".hydrology" ).toggle();') Hydrology
+                #layers_selector_main.hydrology(style='display:none;')
+                  li
+                    a(style='height:35px;cursor:pointer')#marfc MARFC SubBasins
+                  li
+                    a(style='height:35px;cursor:pointer')#huc8 Subbasins (HUC8) 
+                  li
+                    a(style='height:35px;cursor:pointer')#huc10 Watersheds (HUC10)                  
+                  li
+                    a(style='height:35px;cursor:pointer')#rainfall_layer Average Annual Rainfall
+                  li
+                    a(style='height:35px;cursor:pointer')#floodplain_layer Flood Hazard Zone
+                br
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".radar" ).toggle();') Radar Coverage
+                #layers_selector_main.radar(style='display:none;')
+                  li
+                    a(style='height:35px;cursor:pointer;cursor:pointer')#radar1km Radar Coverage (1 km)
+                  li
+                    a(style='height:35px;cursor:pointer;cursor:pointer')#radar1_5km Radar Coverage (1.5 km)
+                  li
+                    a(style='height:35px;cursor:pointer;cursor:pointer')#radar2km Radar Coverage (2 km)   
+                
     #info
 
     script(type="text/ng-template", id="LoginModalContent.html")
