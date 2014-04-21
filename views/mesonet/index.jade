@@ -139,6 +139,12 @@ html(ng-app="app")
               svg(width='20', height='20')
                 circle.cc_structure(cx='10', cy='10', r='7', fill='#000000')
               span Canal Structures
+        #fiber_optic_access_legend
+          ul
+            li
+              svg(width='20', height='20')
+                circle.cc_structure(cx='10', cy='10', r='7', fill='#77FFC6')
+              span Fiber Optic Access Points
         #floodplain_layer_legend
           ul
             li
@@ -236,6 +242,8 @@ html(ng-app="app")
                    a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
                   li  
                    a(style='height:35px;cursor:pointer')#cc_land Canal Corp Land
+                  li  
+                   a(style='height:35px;cursor:pointer')#fiber_optic_access Fiber Optic Access
                 br    
                 button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#political" ).toggle();') Political Boundaries
                 #political(style='display:none;')

@@ -261,7 +261,19 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
   text-decoration: none;
 }
 
+circle:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
 
+}
+
+path:hover{
+	stroke: rgb(255, 0, 0);
+	stroke-width: 3pt;
+	cursor:pointer;
+
+}
 .station{
 	stroke: rgb(0, 89, 190);
 	stroke-width: 2pt;
@@ -273,68 +285,6 @@ select:hover	 								{background-color: rgb(44, 123, 201);}
 }
 .county{
 	fill-opacity:.5;
-}
-.station:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.asos:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.college:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.wind:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.water:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.libraries:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-
-}
-.schools:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-}
-.nysdot:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-}
-.cc_rainfall:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-}
-.cc_structure:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
-}
-
-.users:hover{
-	stroke: rgb(255, 0, 0);
-	stroke-width: 3pt;
-	cursor:pointer;
 }
 
 .whitebox{
