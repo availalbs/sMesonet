@@ -204,8 +204,8 @@ html(ng-app="app")
             ul#economic(style='list-style: none;')
                 strong Map Layers
                 br
-                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".stations" ).toggle();') Stations
-                #layers_selector_main.stations(style='display:none;')
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#stations" ).toggle();') Stations
+                #stations(style='display:none;')
                   li
                     a(style='height:35px;cursor:pointer' subset='primary')#markers First 35 Stations
                   li
@@ -215,25 +215,30 @@ html(ng-app="app")
                   li
                     a(style='height:35px;cursor:pointer')#wind_stations Wind Farms
                 br       
-                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".structures" ).toggle();') Structures
-                #layers_selector_main.structures(style='display:none;')
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#structures" ).toggle();') Structures
+                #structures(style='display:none;')
                   li
                     a(style='height:35px;cursor:pointer')#college SUNY/CUNY Colleges
                   li
                     a(style='height:35px;cursor:pointer')#libraries Public Libraries
                   li
                     a(style='height:35px;cursor:pointer')#schools Public Schools
-                  li  
-                   a(style='height:35px;cursor:pointer')#cc_rainfall Canal Precip Gauges
-                  li  
-                   a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
                   li
                     a(style='height:35px;cursor:pointer')#nysdot NYSDOT CORS
                   li  
                    a(style='height:35px;cursor:pointer')#water Water Level
-                br     
-                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".political" ).toggle();') Political Boundaries
-                #layers_selector_main.political(style='display:none;')
+                br
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#canal_corp" ).toggle();') Canal Corporation
+                #canal_corp(style='display:none;')
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_rainfall Canal Precip Gauges
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_structure Canal Corp Structures
+                  li  
+                   a(style='height:35px;cursor:pointer')#cc_land Canal Corp Land
+                br    
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#political" ).toggle();') Political Boundaries
+                #political(style='display:none;')
                   li
                     a(style='height:35px;cursor:pointer')#county County Population
                   li
@@ -243,8 +248,8 @@ html(ng-app="app")
                   li
                     a(style='height:35px;cursor:pointer')#senate State Senate Districts
                 br
-                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".hydrology" ).toggle();') Hydrology
-                #layers_selector_main.hydrology(style='display:none;')
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#hydrology" ).toggle();') Hydrology
+                #hydrology(style='display:none;')
                   li
                     a(style='height:35px;cursor:pointer')#marfc MARFC SubBasins
                   li
@@ -256,8 +261,8 @@ html(ng-app="app")
                   li
                     a(style='height:35px;cursor:pointer')#floodplain_layer Flood Hazard Zone
                 br
-                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( ".radar" ).toggle();') Radar Coverage
-                #layers_selector_main.radar(style='display:none;')
+                button.toggles.i.fa.fa-plus-square.layers_selector_main(onclick='$( "#radar" ).toggle();') Radar Coverage
+                #radar(style='display:none;')
                   li
                     a(style='height:35px;cursor:pointer;cursor:pointer')#radar1km Radar Coverage (1 km)
                   li

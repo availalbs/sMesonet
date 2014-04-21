@@ -86,7 +86,7 @@ $(function(){
 	
 
 	$('#economic li a').on('click',function(){
-	
+		console.log($(this));
 		if($(this).hasClass('active')){
 			$(this).removeClass('active');
 			
