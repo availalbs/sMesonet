@@ -7,6 +7,7 @@ $(function(){
 	$('.leaflet-tile-pane .leaflet-layer').last().css('z-index',4).addClass('floodplain_layer').hide();
 	$('.county').hide();
 	$('#county_legend').hide();
+	$('#fiber_optic_access_legend').hide();
 	$('#college_legend').hide();
 	$('#water_legend').hide();
 	$('#cc_land_legend').hide();
@@ -37,6 +38,7 @@ $(function(){
 	$('.radar2km').hide();
 	$('.nysdot').hide();
 	$('.cc_land').hide();
+	$('.fiber_optic_access').hide();
 	$('img[alt="main"]').hide();
 	$('img[alt="primary"]').hide();
 

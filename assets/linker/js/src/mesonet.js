@@ -59,6 +59,8 @@ var mesonet = {
 	schools_shape:[],
 	nysdot:nysdot_geo,
 	nysdot_shape:[],
+	fiber_optic_access:fiber_optic_access_geo,
+	fiber_optic_access_shape:[],
 	water:water_geo,
 	water_shape:[],
 	water_g:{},
@@ -94,6 +96,7 @@ var mesonet = {
 		loader.push(mesonet.drawlibraries);
 		loader.push(mesonet.drawschools);
 		loader.push(mesonet.drawnysdot);
+		loader.push(mesonet.drawfiber_optic_access);
 		loader.push(mesonet.drawASOS);
 		loader.push(mesonet.drawwind);
 		loader.push(mesonet.drawwater);
@@ -502,7 +505,7 @@ var mesonet = {
 				.style("stroke",'#333')
 				.on("mouseover", function(self) {
 					self = $(this);
-					var text = "<p><strong>"+ self.attr("radar2m_code") +"</strong><br>"+self.attr("k_name")+"</p>";
+					var text = "<p><strong>"+ self.attr("radar2km_code") +"</strong><br>"+self.attr("k_name")+"</p>";
 		
 					$("#info").show().html(text);
 				})
@@ -662,6 +665,32 @@ var mesonet = {
 	 			.on("mouseover", function(self) {
 					self = $(this);
 					var text = "<p><strong>"+ self.attr("nysdot_name") +"</strong></p>";
+		
+					$("#info").show().html(text);
+				})
+				.on("mouseout", function(self) {
+					self = $(this);
+					$("#info").hide().html("");
+				});
+			//	mesonet.setLegend();
+				
+			loader.run();
+	},
+
+	drawfiber_optic_access:function(){
+
+			mesonet.fiber_optic_access_shape.color = "#77FFC6"
+			mesonet.fiber_optic_access_shape.layer = mesonet.g.selectAll("circle.fiber_optic_access")
+				.data(topojson.feature(mesonet.fiber_optic_access, mesonet.fiber_optic_access.objects.fiber_optic_access).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.attr("class", "fiber_optic_access")
+				.attr("fiber_optic_access_name",function(d){ return d.properties['OBJECTID'];})
+				.style("fill","#77FFC6")
+	 			.on("mouseover", function(self) {
+					self = $(this);
+					var text = "<p><strong>"+ self.attr("fiber_optic_access_name") +"</strong></p>";
 		
 					$("#info").show().html(text);
 				})
@@ -913,6 +942,7 @@ var mesonet = {
 		mesonet.libraries_shape.layer.attr("d", mesonet.path);
 		mesonet.schools_shape.layer.attr("d", mesonet.path);
 		mesonet.nysdot_shape.layer.attr("d", mesonet.path);
+		mesonet.fiber_optic_access_shape.layer.attr("d", mesonet.path);
 		mesonet.water_shape.layer.attr("d", mesonet.path);
 		mesonet.cc_rainfall_shape.layer.attr("d", mesonet.path);
 		mesonet.cc_structure_shape.layer.attr("d", mesonet.path);
