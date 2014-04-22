@@ -30,7 +30,7 @@
 		  	</select>
 		  </td>
 	  <tr>
-	  	<td><strong>Location:</strong></td><td>{{station.lat | number}},{{station.lng | number}}</td>
+	  	<td><strong>Location:</strong></td><td><input ng-model="station.lat" ng-disabled="!editable" style="border:none;box-shadow:none">,<input ng-model="station.lng" ng-disabled="!editable" style="border:none;box-shadow:none"></td>
 		</tr>
 		<tr>
 	  	<td><strong>County:</strong></td><td>{{station.County_Name}}</td>
